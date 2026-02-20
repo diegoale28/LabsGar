@@ -39,11 +39,11 @@ class examenM {
 
   crearInsumo(insumo) {
     return new Promise(async (resolve, reject) => {
-      const { codigo, nombre, costo_unitario, unidad_medida } = insumo
+      const { codigo, nombre, unidad_medida } = insumo
       const id = uuidv4();
-      const insumoInsertar = [id, codigo, nombre, costo_unitario, unidad_medida]
-      const sql = 'INSERT INTO  insumos (id_insumo, codigo, nombre, costo_unitario, unidad_medida) VALUES (?,?,?,?,?)';
-      const valido = camposRequeridos({ codigo, nombre, costo_unitario, unidad_medida })
+      const insumoInsertar = [id, codigo, nombre, unidad_medida]
+      const sql = 'INSERT INTO  insumos (id_insumo, codigo, nombre, unidad_medida) VALUES (?,?,?,?)';
+      const valido = camposRequeridos({ codigo, nombre, unidad_medida })
 
       if (!valido.resultado) {
         return reject({ mensaje: valido.mensaje, status: 400 })
@@ -60,6 +60,7 @@ class examenM {
                     return resolve({ mensaje: 'Ya existe un insumo con el codigo ' + codigo, status: 409 })
                   });
                 }
+                reject({ mensaje: err, status: 500 })
               }
               resolve({ mensaje: 'Insumo insertado con exito', data: insumoInsertar, status: 201 })
             })
@@ -307,7 +308,7 @@ class examenM {
       const { nombre, codigo, descripcion, precio, duracion_minutos, requiere_ayuno, instrucciones_preparacion, insumos_utilizados } = examen
       const ayuno = requiere_ayuno ? 1 : 0
       const examenEditar = [nombre, codigo, descripcion, precio, duracion_minutos, ayuno, instrucciones_preparacion, id]
-      const insumosExamen = JSON.parse(insumos_utilizados || '[]')
+      const insumosExamen = JSON.parse(insumos_utilizados || [])
       const sql = 'UPDATE examen SET nombre = ?, codigo = ?, descripcion = ?, precio = ?, duracion_estimada = ?, requiere_ayuno = ?, instrucciones_preparacion = ?  WHERE id_examen = ?';
       const sqlInsumos = 'INSERT INTO insumos_utilizados (id_insumo_utilizado, id_examen, id_insumo, cantidad_insumo) VALUES ?';
       const eliminarRelacion = 'DELETE FROM insumos_utilizados WHERE id_examen = ?'

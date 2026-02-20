@@ -42,7 +42,16 @@
             <a class="nav-link" href="/doctores">Doctores</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Contacto</a>
+            <a class="nav-link " href="/ordenes">Ordenes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/historias">Historias</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/resultados">Resultados</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/ventas">Ventas</a>
           </li>
         </ul>
 
@@ -122,15 +131,15 @@
             <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
               <input type="radio" autocomplete="off" class="btn-check" name="genero" id="btncheck1" value="M"
                 autocomplete="off" />
-              <label class="btn btn-outline-primary" for="btncheck1">Masculino</label>
+              <label class="btn btn-outline-primary btn-sm" for="btncheck1">Masculino</label>
 
               <input type="radio" autocomplete="off" class="btn-check" name="genero" id="btncheck2" value="F"
                 autocomplete="off" />
-              <label class="btn btn-outline-primary" for="btncheck2">Femenino</label>
+              <label class="btn btn-outline-primary btn-sm" for="btncheck2">Femenino</label>
 
               <input type="radio" autocomplete="off" class="btn-check" name="genero" id="btncheck3" value="Otro"
                 autocomplete="off" />
-              <label class="btn btn-outline-primary" for="btncheck3">Otro..</label>
+              <label class="btn btn-outline-primary btn-sm" for="btncheck3">Otro..</label>
             </div>
 
             <div class="mb-3">
@@ -140,9 +149,11 @@
             </div>
 
             <div class="col-12 d-flex justify-content-center btn-group" role="group">
-              <button class="btn btn-primary" type="submit"> <i data-lucide="check"></i> <span id="texto-boton">Crear
+              <button class="btn btn-primary btn-sm" type="submit"> <i data-lucide="check"></i> <span
+                  id="texto-boton">Crear
                   cliente</span></button>
-              <button class="btn btn-secondary" type="button" onclick="limipiar()"> <i data-lucide="brush-cleaning"></i>
+              <button class="btn btn-secondary btn-sm" type="button" onclick="limipiar()"> <i
+                  data-lucide="brush-cleaning"></i>
                 Limpiar</button>
             </div>
           </form>
@@ -164,7 +175,7 @@
                       <div class="input-group mb-3">
                         <input type="text" class="form-control" name="cedulaBuscar" placeholder="Buscar por cédula"
                           aria-label="Buscar por cédula" aria-describedby="button-search" autocomplete="off">
-                        <button class="btn btn-outline-secondary" type="submit" id="button-search"><i
+                        <button class="btn btn-outline-secondary btn-sm" type="submit" id="button-search"><i
                             data-lucide="search"></i></button>
                       </div>
                     </form>
@@ -204,10 +215,10 @@
                       <%= cliente.direccion %>
                     </td>
                     <td>
-                      <button type="button" class="btn btn-primary"
+                      <button type="button" class="btn btn-primary btn-sm"
                         onclick="seleccionarCliente('<%= JSON.stringify(cliente) %>')"><i
                           data-lucide="pen"></i></button>
-                      <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                      <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
                         data-bs-target="#deleteClientModal"
                         onclick="clienteEliminar('<%= cliente.id_cli %>', '<%= cliente.nombre %> <%= cliente.apellido %>')"><i
                           data-lucide="trash-2"></i></button>

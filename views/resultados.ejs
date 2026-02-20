@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/stylesheets/doctores.css" rel="stylesheet">
+  <title>
+    <%= titulo %>
+  </title>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="/">
+        <figure class="mb-0">
+          <img src="/images/labsgar.png" alt="labsgar" width="30" height="30" class="d-inline-block align-text-center">
+          LabsGar
+        </figure>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+
+        <ul class="navbar-nav mx-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="/">Inicio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/examenes">Examenes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/clientes">Clientes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/doctores">Doctores</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="/ordenes">Ordenes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/historias">Historias</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/resultados">Resultados</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/ventas">Ventas</a>
+          </li>
+        </ul>
+
+        <div class="d-flex">
+          <a href="#" class="btn btn-primary rounded-pill px-4">Empezar</a>
+        </div>
+
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+          <h2 class="h4">Resultados del laboratorio</h2>
+        </div>
+
+        <div class="col-12 d-flex gap-4 mb-4">
+          <button type="button" class="btn btn-primary btn-sm rounded-pill px-4" data-bs-toggle="modal"
+            data-bs-target="#resultados" onclick="limpiar()">
+            <i data-lucide="file-plus-corner" style="width: 20px; height: 20px;"></i> Nueva orden
+          </button>
+        </div>
+
+    <% if(resultados.length){%>
+    <div class="row">
+      <% resultados.forEach(function(r) {%>
+      <div class="col-4 mb-4">
+        <div class="card doctor-card h-100 shadow border-0" >
+          <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+            <span class="fw-bold">Orden #<%= r.numero_orden%></span>
+            <span class="badge bg-success rounded-pill text-capitalize"><%= r.estado%></span>
+          </div>
+
+          <div class="card-body">
+            <div class="mb-1">
+              <h6 class="text-uppercase text-primary fw-bold small mb-2">Paciente</h6>
+              <p class="mb-0 fw-medium"><i data-lucide="user"></i> <%= r.nombre_cli + ' ' + r.apellido_cli%></p>
+              <small class="text-muted d-block"><i data-lucide="id-card"></i> CI: <%= r.cedula%></small>
+              <small class="text-muted d-block"><i data-lucide="phone"></i> +58 <%= r.tel_cli%></small>
+            </div>
+            
+            <div class="mb-1 mt-2 d-flex flex-column gap-1">
+              <h6 class="text-uppercase text-secondary fw-bold small">Médico recomendado</h6>
+              <p class="mb-0"><i data-lucide="stethoscope"></i> <%= r.nombre_med + ' ' + r.apellido_med%></p>
+              <div class="d-flex">
+                <div class="badge d-block bg-info text-black rounded-pill"><%= r.especialidad%></div>
+              </div>
+              <small class="text-muted"><i data-lucide="phone"></i> +58 <%= r.telefono_med%></small>
+            </div>
+
+            <div class="mt-1">
+              <label class="small fw-bold text-muted"><i data-lucide="clipboard-list"></i> Observaciones:</label>
+              <p class="small text-truncate-2 mb-0"><%= r.observaciones%></p>
+            </div>
+          </div>
+
+          <div class="card-footer bg-white border-top-0 pb-3">
+            <div class="d-flex align-items-center p-2 rounded-2 border border-light-subtle">
+              <i class="bi bi-person-badge me-2 text-primary"></i>
+              <div style="font-size: 0.75rem;">
+                <span class="text-muted"><i data-lucide="user-check"></i> Procesado por:</span><br>
+                <span class="fw-bold"><%= r.nombre_usu + ' ' + r.apellido_usu%></span>
+              </div>
+            </div>
+            <button class="btn mx-auto btn-outline-primary btn-sm rounded-pill mt-3" onclick="informacion('<%= r.resultado%>','<%= r.interpretacion%>','<%= r.observaciones%>')" data-bs-target="#obsModal" data-bs-toggle="modal">
+              <i data-lucide="eye"></i> Ver información
+            </button>
+          </div>
+        </div>
+      </div>
+      <% })%>
+    </div>
+    <% } else { %>  
+      <div class="row justify-content-center">
+    <div class="col-md-6 text-center py-5">
+      <div class="mb-4 d-inline-flex align-items-center justify-content-center bg-light rounded-circle" style="width: 100px; height: 100px;">
+        <i data-lucide="search-x" class="text-muted" style="width: 48px; height: 48px;"></i>
+      </div>
+      
+      <h3 class="fw-bold text-dark">No se encontraron resultados</h3>
+    </div>
+  </div>
+      <% } %>
+  </div>
+
+      <div class="modal fade" id="resultados" tabindex="-1" aria-labelledby="resultadosLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+          <form method="post" action="/resultados/crear" id="formulario" class="row g-3 needs-validation" novalidate>
+
+            <div class="modal-body px-5">
+              <h4 class="modal-title mb-4 text-center" id="resultadosLabel">Nueva orden</h4>
+
+              <div class="row g-3">
+                <div class="col-md-6 text-start">
+                  <label class="form-label small fw-bold">Orden</label>
+                  <select class="form-select" id="selectOrden" name="id_orden" required>
+                    <option value="" selected disabled>Elija un Orden...</option>
+                    <% ordenes.forEach(function(orden){%>
+                      <option value='<%= orden.id_orden %>'>
+                        <%= 'Orden #' + orden.numero_orden + ' ' + orden.nombre + ' ' + orden.apellido + ' ' +
+                          orden.cedula %>
+                      </option>
+                      <% })%>
+                  </select>
+                </div>
+                <div class="col-md-6 text-start">
+                  <label class="form-label small fw-bold">Doctor a recomendar</label>
+                  <select class="form-select" id="selectUsuario" name="id_medico" required>
+                    <option value="" selected disabled>Elija un Doctor(a)...</option>
+                    <% medicos.forEach(function(m){ %>
+                      <option class="text-capitalize" value="<%= m.id_medico %>">
+                        <%= m.nombre + ' ' + m.apellido %>
+                      </option>
+                      <% })%>
+                  </select>
+                </div>
+                <div class="col-6 text-start">
+                  <label for="Interpretacion" class="form-label text-capitalize fw-bold">Interpretación</label>
+                  <textarea class="form-control" style="resize: none;" name="interpretacion" id="interpretacion" rows="3"
+                    placeholder="Interpretación"></textarea>
+                </div>
+                <div class="col-6 text-start">
+                  <label for="Resultados" class="form-label text-capitalize fw-bold">Resultados</label>
+                  <textarea class="form-control" style="resize: none;" name="resultado" id="resultado" rows="3"
+                    placeholder="Resultados"></textarea>
+                </div>
+                <div class="col-6 text-start">
+                  <label for="Observaciones" class="form-label text-capitalize fw-bold">Observaciones</label>
+                  <textarea class="form-control" style="resize: none;" name="observaciones" id="observaciones" rows="3"
+                    placeholder="Observación"></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer border-0 justify-content-center pb-4">
+              <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Cancelar</button>
+              <button type="submit" class="btn btn-primary btn-sm px-4" id="botonGuardar">Aceptar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+<div class="modal fade" id="obsModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header border-0">
+            <h5 class="modal-title">Información de los resultados</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <div>
+              <p class="fs-5">
+                <strong>Resultados</strong>
+              </p>
+              <p id="textoResultado">
+              </p>
+            </div>
+            <div>
+              <p class="fs-5">
+                <strong>Interpretacion</strong>
+              </p>
+              <p id="textoInterpretacion">
+              </p>
+            </div>
+            <div>
+              <p class="fs-5">
+                <strong>Observaciones</strong>
+              </p>
+              <p id="textoObservaciones">
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      <div class="position-fixed top-0 d-flex justify-content-center w-100" style="z-index: 23;">
+    <% if (mensaje) { %>
+      <div
+        class="alert alert-<%= status == 201 || status == 200 ? 'success' : 'danger' %> alert-dismissible fade show m-3"
+        role="alert" style="width: 30%;">
+        <strong>
+          <%= mensaje %>
+        </strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      <% } %>
+
+      
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    (() => {
+      'use strict'
+      // Fetch all the forms we want to apply custom Bootstrap validation styles to
+      const forms = document.querySelectorAll('.needs-validation')
+      console.log(Array.from(forms));
+
+      // Loop over them and prevent submission
+      Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+
+          form.classList.add('was-validated')
+        }, false)
+      })
+    })()
+
+     setTimeout(() => {
+      const alertElement = document.querySelector('.alert');
+      if (alertElement) {
+        const alert = new bootstrap.Alert(alertElement);
+        alert.close();
+      }
+    }, 3000);
+
+    function limpiar() {
+      
+    }
+
+    function informacion(res, inte, obs) {
+      document.getElementById('textoResultado').textContent = res
+      document.getElementById('textoInterpretacion').textContent = inte
+      document.getElementById('textoObservaciones').textContent = obs
+    }
+  </script>
+    <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

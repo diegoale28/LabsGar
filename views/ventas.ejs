@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/stylesheets/style.css" rel="stylesheet">
+  <title>
+    <%= titulo %>
+  </title>
+</head>
+
+<body class="bg-light">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="/">
+        <figure class="mb-0">
+          <img src="/images/labsgar.png" alt="labsgar" width="30" height="30" class="d-inline-block align-text-center">
+          LabsGar
+        </figure>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+
+        <ul class="navbar-nav mx-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="/">Inicio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/examenes">Examenes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/clientes">Clientes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/doctores">Doctores</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="/ordenes">Ordenes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/historias">Historias</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/resultados">Resultados</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/ventas">Ventas</a>
+          </li>
+        </ul>
+
+        <div class="d-flex">
+          <a href="#" class="btn btn-primary rounded-pill px-4">Empezar</a>
+        </div>
+
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-10">
+        <div class="card shadow-sm border-0">
+          <div class="card-header bg-primary text-white py-3">
+            <h5 class="card-title mb-0"><i class="bi bi-cart-plus me-2"></i>Registrar Nueva Venta</h5>
+          </div>
+          <div class="card-body p-4">
+            <form id="formVenta" action="/ventas/crear" method="post">
+              <div class="row g-3">
+                <div class="col-12">
+                  <label class="form-label fw-bold">Orden</label>
+                  <select class="form-select" id="orden" name="orden" onchange="listarExamenes()" required>
+                    <option selected disabled value="">Seleccionar orden...</option>
+                    <% ordenes.forEach(function(orden){%>
+                      <option value='<%= JSON.stringify(orden) %>'>
+                        <%= 'Orden #' + orden.numero_orden + ' ' + orden.nombre + ' ' + orden.apellido + ' ' +
+                          orden.cedula %>
+                      </option>
+                      <% })%>
+                  </select>
+                </div>
+
+                <div class="col-md-12">
+                  <label class="form-label fw-bold">Método de Pago</label>
+                  <div class="d-flex gap-3">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="pago" id="efectivo" value="efectivo" checked>
+                      <label class="form-check-label" for="efectivo text-muted">Efectivo</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="pago" id="tarjeta" value="tarjeta">
+                      <label class="form-check-label" for="tarjeta text-muted">Tarjeta</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="pago" id="tansferencia" value="tansferencia">
+                      <label class="form-check-label" for="tarjeta text-muted">Transferencia</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="pago" id="pago_movil" value="pago_movil">
+                      <label class="form-check-label" for="tarjeta text-muted">Pago movil</label>
+                    </div>
+                    <input type="hidden" id="subtotal" name="subtotal">
+                    <input type="hidden" id="iva" name="iva">
+                    <input type="hidden" id="total" name="total">
+                  </div>
+                </div>
+              </div>
+
+              <hr class="my-4">
+
+              <div class="examen-list-container">
+                <h6 class="text-uppercase text-muted fw-bold small mb-3">Detalle de Exámenes</h6>
+                <ul class="list-group list-group-flush mb-3" id="listaExamenes">
+                  <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                    <div class="text-center">
+                      Selecciona una orden para continuar..
+                    </div>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                    <div>
+                      <span class="d-block fw-bold">Subtotal</span>
+                    </div>
+                    <span class="fw-bold">$0.00</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                    <div>
+                      <span class="d-block fw-bold">IVA</span>
+                    </div>
+                    <span class="fw-bold">$0.00</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                    <div>
+                      <span class="d-block fs-4 fw-bold">Total a pagar</span>
+                    </div>
+                    <span class="fw-bold fs-4 text-primary">$0.00</span>
+                  </li>
+                </ul>
+              </div>
+              <button type="submit" form="formVenta" class="btn btn-success btn-lg w-100 shadow-sm mb-3">
+                <i class="bi bi-check-circle me-2"></i>Confirmar y Pagar
+              </button>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="position-fixed top-0 d-flex justify-content-center w-100" style="z-index: 23;">
+    <% if (mensaje) { %>
+      <div
+        class="alert alert-<%= status == 201 || status == 200 ? 'success' : 'danger' %> alert-dismissible fade show m-3"
+        role="alert" style="width: 30%;">
+        <strong>
+          <%= mensaje %>
+        </strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      <% } %>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+
+    setTimeout(() => {
+      const alertElement = document.querySelector('.alert');
+      if (alertElement) {
+        const alert = new bootstrap.Alert(alertElement);
+        alert.close();
+      }
+    }, 3000);
+
+    function listarExamenes() {
+      const select = document.getElementById('orden')
+      const datos = JSON.parse((select.value).replace(/\\/g, "\\\\")
+        .replace(/\n/g, "\\n")
+        .replace(/\r/g, "\\r")
+        .replace(/\t/g, "\\t")
+        .replace(/'/g, "&#39;"));
+      actualizarLista(datos.lista_examenes)
+      console.log(datos)
+    }
+
+    function actualizarLista(listaObjeto) {
+      const lista = document.getElementById('listaExamenes');
+      const inputSubtotal = document.getElementById('subtotal')
+      const inputIVA = document.getElementById('iva')
+      const inputTotal = document.getElementById('total')
+      lista.innerHTML = "";
+      let subtotales = 0
+      let iva = 0
+      let totales = 0
+
+      if (listaObjeto.length === 0) {
+        lista.innerHTML = `
+          <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                    <div class="text-center">
+                      Selecciona una orden para continuar..
+                    </div>
+                  </li>`;
+        return;
+      }
+
+      listaObjeto.forEach((e) => {
+        const fila = `
+            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                    <div>
+                      <span class="d-block">${e.nombre}</span>
+                      <small class="text-muted">Código: ${e.codigo}</small>
+                    </div>
+                    <span class="fw-bold">$${e.precio.toFixed(2)}</span>
+                  </li>
+        `;
+        lista.innerHTML += fila;
+        subtotales += e.precio
+      });
+      iva = subtotales * 0.16
+      totales = subtotales + iva
+      const filaTotales = `
+      <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                    <div>
+                      <span class="d-block fw-bold">Subtotal</span>
+                    </div>
+                    <span class="fw-bold"> $ ${subtotales.toFixed(2)} </span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                    <div>
+                      <span class="d-block fw-bold">IVA</span>
+                    </div>
+                    <span class="fw-bold">$ ${iva.toFixed(2)}</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                    <div>
+                      <span class="d-block fs-4 fw-bold">Total a pagar</span>
+                    </div>
+                    <span class="fw-bold fs-4 text-primary">$ ${totales.toFixed(2)}</span>
+                  </li>
+      `
+      lista.innerHTML += filaTotales;
+      inputSubtotal.value = subtotales
+      inputIVA.value = iva
+      inputTotal.value = totales
+    }
+
+  </script>
+  <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

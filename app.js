@@ -11,6 +11,9 @@ var clienteRouter = require('./routes/clientesRoute')
 var examnenRouter = require('./routes/ExamenesRoute')
 var doctoresRouter = require('./routes/doctoresRoute')
 var ordenesRouter = require('./routes/ordenesRoute')
+var historiaRouter = require('./routes/historiasRouter')
+var resultadosRouter = require('./routes/resultadosRoute')
+var ventasRouter = require('./routes/ventasRoute')
 
 var app = express();
 
@@ -36,6 +39,9 @@ app.use('/clientes', clienteRouter);
 app.use('/examenes', examnenRouter);
 app.use('/doctores', doctoresRouter);
 app.use('/ordenes', ordenesRouter);
+app.use('/historias', historiaRouter);
+app.use('/resultados', resultadosRouter);
+app.use('/ventas', ventasRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

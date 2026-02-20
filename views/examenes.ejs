@@ -18,6 +18,7 @@
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/stylesheets/doctores.css" rel="stylesheet">
     <title>
       <%= titulo %>
     </title>
@@ -26,12 +27,13 @@
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
       <div class="container-fluid">
-       <a class="navbar-brand fw-bold" href="/">
-        <figure class="mb-0">
-          <img src="/images/labsgar.png" alt="labsgar" width="30" height="30" class="d-inline-block align-text-center">
-          LabsGar
-        </figure>
-      </a>
+        <a class="navbar-brand fw-bold" href="/">
+          <figure class="mb-0">
+            <img src="/images/labsgar.png" alt="labsgar" width="30" height="30"
+              class="d-inline-block align-text-center">
+            LabsGar
+          </figure>
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
           aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -53,7 +55,16 @@
               <a class="nav-link" href="/doctores">Doctores</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Contacto</a>
+              <a class="nav-link " href="/ordenes">Ordenes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/historias">Historias</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/resultados">Resultados</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/ventas">Ventas</a>
             </li>
           </ul>
 
@@ -69,17 +80,17 @@
       <div class="container mt-5">
         <div class="row mb-4 justify-content-between">
           <div class="col-6 d-flex gap-4">
-            <button type="button" class="btn btn-primary rounded-pill px-4" data-bs-toggle="modal"
+            <button type="button" class="btn btn-primary btn-sm rounded-pill px-4" data-bs-toggle="modal"
               data-bs-target="#agregarExamen" onclick="limpiarExamen()">
-              <i data-lucide="clipboard-list"></i> Agregar Examen
+              <i data-lucide="clipboard-list" style="width: 20px; height: 20px;"></i> Agregar Examen
             </button>
-            <button type="button" class="btn btn-primary rounded-pill px-4" onclick="limipiarInsumo()"
+            <button type="button" class="btn btn-primary btn-sm rounded-pill px-4" onclick="limipiarInsumo()"
               data-bs-toggle="modal" data-bs-target="#agregarInsumo">
-              <i data-lucide="flask-conical"></i> Agregar insumo
+              <i data-lucide="flask-conical" style="width: 20px; height: 20px;"></i> Agregar insumo
             </button>
-            <button type="button" class="btn btn-primary rounded-pill px-4" data-bs-toggle="modal"
+            <button type="button" class="btn btn-primary btn-sm rounded-pill px-4" data-bs-toggle="modal"
               data-bs-target="#tablaInsumo">
-              <i data-lucide="list"></i> Lista de insumos
+              <i data-lucide="list" style="width: 20px; height: 20px;"></i> Lista de insumos
             </button>
           </div>
           <div class="col-4">
@@ -114,13 +125,13 @@
             <div class="row g-4">
               <% examenes.forEach(function (examen) { const tiempo=horas(examen.duracion_estimada); %>
                 <div class="col-4">
-                  <div class="card shadow-sm">
-                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                      <small class="text-muted fw-bold">
+                  <div class="card doctor-card shadow-sm">
+                    <div class="card-header border-0 bg-white d-flex justify-content-between align-items-center">
+                      <small class="fs-5 text-uppercase fw-bold">
                         <%= examen.codigo %>
                       </small>
                       <% if(examen.requiere_ayuno==1) { %>
-                        <span class="badge rounded-pill bg-danger text-white">
+                        <span class="badge rounded-pill bg-info text-white">
                           Requiere Ayuno
                         </span>
                         <% } %>
@@ -128,22 +139,30 @@
 
                     <div class="card-body">
                       <h5 class="card-title text-primary">
+                        <i data-lucide="list"></i>
                         <%= examen.nombre %>
                       </h5>
-                      <p class="card-text text-secondary small">
+                      <p class="card-text fw-bold text-capitalize">
+                        <i data-lucide="ClipboardList"></i>
                         <%= examen.descripcion %>
                       </p>
 
                       <div class="d-flex justify-content-between align-items-center my-3">
                         <div>
-                          <span class="text-muted d-block small">Precio</span>
+                          <p class="card-text fw-bold text-capitalize">
+                            <i data-lucide="circle-dollar-sign"></i>
+                            <span>
+                              Precio
+                            </span>
+                          </p>
                           <span class="fs-4 fw-bold text-success">
-                            <%= examen.precio %>
+                            $<%= examen.precio.toFixed(2) %>
                           </span>
                         </div>
                         <div class="text-end">
                           <span class="text-muted d-block small">Duración</span>
                           <span class="badge bg-light text-dark border">
+                            <i data-lucide="clock"></i>
                             <%= tiempo %>
                           </span>
                         </div>
@@ -159,18 +178,15 @@
                           </h2>
                           <div id="<%= examen.id_examen %>>" class="accordion-collapse collapse"
                             data-bs-parent="#instrucciones<%= examen.id_examen %>>">
-                            <div class="accordion-body small text-muted">
+                            <div class="accordion-body small text-muted text-capitalize">
                               <%= examen.instrucciones_preparacion %>
                             </div>
                           </div>
                         </div>
                       </div>
                       <div class="card-footer bg-transparent border-top-0 pb-3">
-                        <button class="btn btn-outline-primary w-100"><i data-lucide="eye"></i> Ver detalles...</button>
-                      </div>
-                      <div class="card-footer bg-transparent border-top-0 pb-3">
                         <div class="col-12 d-flex justify-content-center btn-group" role="group">
-                          <button class="btn btn-outline-dark" type="button" data-bs-toggle="modal"
+                          <button class="btn btn-outline-primary" type="button" data-bs-toggle="modal"
                             onclick="editarExamen('<%= JSON.stringify(examen) %>')" data-bs-target="#agregarExamen"><i
                               data-lucide="pencil"></i> <span id="texto-boton">Editar</span>
                           </button>
@@ -302,7 +318,7 @@
             <input type="hidden" name="insumos_utilizados" id="insumos_utilizados">
             <div class="modal-footer border-0 justify-content-center pb-4">
               <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Cancelar</button>
-              <button type="submit" class="btn btn-primary px-4" id="botonGuardar" disabled>Aceptar</button>
+              <button type="submit" class="btn btn-primary btn-sm px-4" id="botonGuardar" disabled>Aceptar</button>
             </div>
           </form>
         </div>
@@ -328,16 +344,6 @@
                 <label for="codigo" class="form-label text-capitalize fw-bold">Código</label>
                 <input type="text" class="form-control" name="codigo" id="codigo" placeholder="INS-001" required>
                 <div class="invalid-feedback">Código requerido.</div>
-              </div>
-
-              <div class="col-md-12 text-start">
-                <label for="costo_unitario" class="form-label text-capitalize fw-bold">Costo Unitario</label>
-                <div class="input-group has-validation">
-                  <span class="input-group-text">$</span>
-                  <input type="number" step="0.001" class="form-control" name="costo_unitario" id="costo_unitario"
-                    placeholder="0.00" required>
-                  <div class="invalid-feedback">Ingrese el costo.</div>
-                </div>
               </div>
 
               <div class="col-md-12 text-start">

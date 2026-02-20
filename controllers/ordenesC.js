@@ -13,9 +13,20 @@ class ordenesC {
     })
   }
 
-  uno(numero) {
+  uno(id) {
     return new Promise((resolve, reject) => {
-      ordenesM.uno(numero)
+      ordenesM.uno(id)
+        .then((result) => {
+          resolve(result)
+        }).catch((err) => {
+          reject(err)
+        });
+    })
+  }
+
+  cambiar(estado, id) {
+    return new Promise((resolve, reject) => {
+      ordenesM.cambiar(estado, id)
         .then((result) => {
           resolve(result)
         }).catch((err) => {
@@ -38,6 +49,17 @@ class ordenesC {
   editar(orden, id) {
     return new Promise((resolve, reject) => {
       ordenesM.editar(orden, id)
+        .then((result) => {
+          resolve(result)
+        }).catch((err) => {
+          reject(err)
+        });
+    })
+  }
+  
+  filtros(filtro) {
+    return new Promise((resolve, reject) => {
+      ordenesM.filtros(filtro)
         .then((result) => {
           resolve(result)
         }).catch((err) => {

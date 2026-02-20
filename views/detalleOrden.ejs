@@ -1,0 +1,339 @@
+<% const color=(estado)=> {
+  switch (estado) {
+  case "pendiente":
+  return "bg-warning text-black";
+  break;
+  case "completado":
+  return "bg-success";
+  break;
+  case "cancelado":
+  return "bg-danger";
+  break;
+  case "procesando":
+  return "bg-primary border-1 border border-white";
+  break;
+  default:
+  break;
+  }}
+
+  const fecha = (fecha) => {
+  const datos = new Date(fecha).toLocaleDateString('es-ES',
+  {
+  year:'numeric',
+  month:'2-digit',
+  day:'2-digit'
+  }
+  )
+  return `${datos}`
+  }
+
+  const total = (montos) =>{
+  let montoFinal = 0
+  montos.forEach((r)=>{
+  montoFinal = montoFinal + parseFloat(r.precio)
+  })
+  return montoFinal.toFixed(2)
+  }
+  %>
+
+  <!DOCTYPE html>
+  <html lang="es">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <title>
+      <%= titulo %>
+    </title>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+      <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="/">
+          <figure class="mb-0">
+            <img src="/images/labsgar.png" alt="labsgar" width="30" height="30"
+              class="d-inline-block align-text-center">
+            LabsGar
+          </figure>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+
+          <ul class="navbar-nav mx-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/">Inicio</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/examenes">Examenes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/clientes">Clientes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/doctores">Doctores</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/ordenes">Ordenes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/historias">Historias</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/resultados">Resultados</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/ventas">Ventas</a>
+            </li>
+          </ul>
+
+          <div class="d-flex">
+            <a href="#" class="btn btn-primary rounded-pill px-4">Empezar</a>
+          </div>
+
+        </div>
+      </div>
+    </nav>
+
+    <section>
+      <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h2 class="h4">Órden número</h2>
+        </div>
+
+        <div class="col-12 d-flex justify-content-between gap-4 mb-4">
+          <a href="<%= link %>" class="btn btn-secondary btn-sm rounded-pill px-4">
+            <i data-lucide="move-left" style="width: 20px; height: 20px;"></i> Regresar
+          </a>
+
+          <% if(panel){ %>
+            <div>
+                <% if(ordenes.estado=='cancelado'){%>
+                <button type="button" class="btn btn-primary btn-sm rounded-pill px-4" data-bs-toggle="modal"
+                  data-bs-target="#cambiarEstado">
+                  <i data-lucide="refresh-ccw" style="width: 20px; height: 20px;"></i> Cambiar estado
+                </button>
+                <%}%>
+                <% if(ordenes.estado=='pendiente'){%>                  
+                  <button type="button" class="btn btn-danger btn-sm rounded-pill px-3" data-bs-toggle="modal"
+                  data-bs-target="#cancelarOrden">
+                  <i data-lucide="ban" style="width: 20px; height: 20px;"></i> Cancelar orden
+                </button>
+                <%}%>
+              </div>
+                <% } %>
+
+        </div>
+
+        <div class="card shadow-lg border-0 mx-auto col-12">
+          <div class="card-header bg-primary text-white p-4">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h2 class="mb-0">Orden de Laboratorio #<%= ordenes.numero_orden %>
+                </h2>
+              </div>
+              <div class="text-end">
+                <span class="badge rounded-pill px-3 fs-6 text-capitalize <%= color(ordenes.estado) %>">
+                  <%= ordenes.estado %>
+                </span>
+                <p class="mb-0 mt-2"><i data-lucide="calendar" class="me-2"></i>
+                  <%= fecha(ordenes.fecha) %>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-body p-4">
+            <div class="row mb-4">
+              <div class="col-md-6 border-end">
+                <h6 class="text-muted text-uppercase small fw-bold mb-3">Información del Paciente</h6>
+                <div class="d-flex align-items-center mb-2">
+                  <i data-lucide="user" class="text-primary me-3"></i>
+                  <div>
+                    <strong class="text-uppercase">
+                      <%= ordenes.nombre_cliente +' '+ ordenes.apellido_cliente %></strong><br>
+                    <span class="text-muted small">C.I <%= ordenes.cedula %></span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 ps-md-4">
+                <h6 class="text-muted text-uppercase small fw-bold mb-3">Atendido por</h6>
+                <div class="d-flex align-items-center mb-2">
+                  <i data-lucide="clipboard-check" class="text-success me-3"></i>
+                  <div>
+                    <strong><%= ordenes.nombre_encargado +' '+ ordenes.apellido_encargado %></strong><br>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <hr class="my-4">
+
+            <h6 class="text-muted text-uppercase small fw-bold mb-3">Servicios Solicitados</h6>
+            <div class="table-responsive">
+              <table class="table table-hover align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th>Código</th>
+                    <th>Examen</th>
+                    <th class="text-center">Ayuno</th>
+                    <th class="text-end">Precio</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% ordenes.lista_examenes.forEach(function(examen){ %>
+                  <tr>
+                    <td><span class="badge bg-secondary"><%= examen.codigo %></span></td>
+                    <td>
+                      <strong><%= examen.nombre %></strong><br>
+                    </td>
+                    <td class="text-center">
+                      <% if(examen.requiere_ayuno == 1){ %>
+                        <span class="text-info" title="Requiere Ayuno">
+                          <i data-lucide="alert-circle" class="size-sm"></i> Sí
+                        </span>
+                      <% } else { %>
+                        <span class="text-danger" title="Requiere Ayuno">
+                          <i data-lucide="alert-circle" class="size-sm"></i> No
+                        </span>
+                      <% } %>
+                    
+                    </td>
+                    <td class="text-end fw-bold">$<%= examen.precio.toFixed(2) %></td>
+                  </tr>
+                  <% }) %>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="3" class="text-end fw-bold pt-3">Total a Pagar:</td>
+                    <td class="text-end fs-5 fw-bold text-primary pt-3">$<%= total(ordenes.lista_examenes) %></td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+
+            <div class="mt-4 p-3 bg-light rounded">
+              <h6 class="small fw-bold mb-1"><i data-lucide="message-square" class="me-2 size-sm"></i>Observaciones:
+              </h6>
+              <p class="text-muted mb-0 italic"> <%= ordenes.observaciones ? ordenes.observaciones : ' Sin observaciones adicionales.' %>
+              </p>
+                  </div>
+                </div>
+
+                <% if(ordenes.estado=='procesando' ){%>
+                  <div class="card-footer bg-white text-center py-3">
+                    <a href="/resultados" class="btn btn-primary btn-sm" type="submit">
+                        <i data-lucide="check-circle" class="size-sm"></i> Cargar resultados
+                      </a>
+                  </div>
+                  <%}%>
+
+              </div>
+            </div>
+    </section>
+
+    <div class="modal fade" id="cambiarEstado" tabindex="-1" aria-labelledby="cambiarEstadoLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+          <form method="post" action="/ordenes/cambiar/<%= ordenes.id_orden %>?_method=PUT" id="formulario"
+            class="row g-3 needs-validation" novalidate>
+            <div class="modal-body px-5">
+              <h4 class="modal-title mb-4 text-center" id="cambiarEstadoLabel">Cambiar estado</h4>
+              <div class="row g-3">
+                <div class="col-12 text-start">
+                  <label class="form-label small fw-bold">Estado</label>
+                  <select class="form-select" id="selectEstado" name="estado" required>
+                    <option value="" selected disabled>Elija un estado...</option>
+                    <option value="pendiente">Pendiente</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer border-0 justify-content-center pb-4">
+              <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Cancelar</button>
+              <button type="submit" class="btn btn-primary btn-sm px-4" id="botonGuardar">Aceptar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="cancelarOrden" tabindex="-1" aria-labelledby="cancelarOrdenLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header border-0 pb-0">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center pt-0">
+            <div class="text-danger mb-3">
+              <i data-lucide="trash-2" style="width: 64px; height: 64px;"></i>
+            </div>
+            <h4 class="modal-title mb-2" id="cancelarOrdenLabel">¿Desea cancelar la orden?</h4>
+            <p class="text-muted">Esta acción no se puede deshacer.</p>
+          </div>
+          <div class="modal-footer border-0 justify-content-center pb-4">
+            <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Cancelar</button>
+            <form id="cancelarOrdenForm" method="POST" action="/ordenes/cambiar/<%= ordenes.id_orden %>?_method=PUT">
+              <input type="hidden" value="cancelado" name="estado" id="canceladoInput">
+              <button type="submit" class="btn btn-danger px-4">Eliminar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="position-fixed top-0 d-flex justify-content-center w-100" style="z-index: 23;">
+      <% if (mensaje) { %>
+        <div
+          class="alert alert-<%= status == 201 || status == 200 ? 'success' : 'danger' %> alert-dismissible fade show m-3"
+          role="alert" style="width: 30%;">
+          <strong>
+            <%= mensaje %>
+          </strong>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <% } %>
+    </div>
+    <script>
+      lucide.createIcons();
+
+      (() => {
+        'use strict'
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll('.needs-validation')
+        console.log(Array.from(forms));
+
+        // Loop over them and prevent submission
+        Array.from(forms).forEach(form => {
+          form.addEventListener('submit', event => {
+            if (!form.checkValidity()) {
+              event.preventDefault()
+              event.stopPropagation()
+            }
+
+            form.classList.add('was-validated')
+          }, false)
+        })
+      })()
+
+      setTimeout(() => {
+        const alertElement = document.querySelector('.alert');
+        if (alertElement) {
+          const alert = new bootstrap.Alert(alertElement);
+          alert.close();
+        }
+      }, 3000);
+
+    </script>
+    <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  </body>
+
+  </html>

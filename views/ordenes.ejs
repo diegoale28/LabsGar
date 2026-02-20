@@ -1,0 +1,474 @@
+<% const color=(estado)=> {
+  switch (estado) {
+  case "pendiente":
+  return "bg-warning";
+  break;
+  case "completado":
+  return "bg-success";
+  break;
+  case "cancelado":
+  return "bg-danger";
+  break;
+  case "procesando":
+  return "bg-primary";
+  break;
+  default:
+  break;
+  }}
+
+  const fecha = (fecha) => {
+  const datos = new Date(fecha).toLocaleDateString('es-ES',
+  {
+  year:'numeric',
+  month:'2-digit',
+  day:'2-digit'
+  }
+  )
+  return `${datos}`
+  }
+  %>
+
+  <!DOCTYPE html>
+  <html lang="es">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <title>
+      <%= titulo %>
+    </title>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+      <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="/">
+          <figure class="mb-0">
+            <img src="/images/labsgar.png" alt="labsgar" width="30" height="30"
+              class="d-inline-block align-text-center">
+            LabsGar
+          </figure>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+
+          <ul class="navbar-nav mx-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/">Inicio</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/examenes">Examenes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/clientes">Clientes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/doctores">Doctores</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/ordenes">Ordenes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/historias">Historias</a>
+            </li>
+           <li class="nav-item">
+            <a class="nav-link" href="/resultados">Resultados</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/ventas">Ventas</a>
+          </li>
+          </ul>
+
+          <div class="d-flex">
+            <a href="#" class="btn btn-primary rounded-pill px-4">Empezar</a>
+          </div>
+
+        </div>
+      </div>
+    </nav>
+
+    <section>
+      <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h2 class="h4">Órdenes de Exámenes de Laboratorio</h2>
+        </div>
+
+        <div class="col-12 d-flex gap-4 mb-4">
+          <button type="button" class="btn btn-primary btn-sm rounded-pill px-4" data-bs-toggle="modal"
+            data-bs-target="#agregarOrden" onclick="limpiar()">
+            <i data-lucide="file-plus-corner" style="width: 20px; height: 20px;"></i> Nueva orden
+          </button>
+          <a href="/ordenes" class="btn btn-primary btn-sm rounded-pill px-4">
+            <i data-lucide="LayoutGrid" style="width: 20px; height: 20px;"></i> Todas
+          </a>
+          <a href="/ordenes/completas" class="btn btn-primary btn-sm rounded-pill px-4">
+            <i data-lucide="CheckCircle2" style="width: 20px; height: 20px;"></i> Completas
+          </a>
+          <a href="/ordenes/pendientes" class="btn btn-primary btn-sm rounded-pill px-4">
+            <i data-lucide="Clock" style="width: 20px; height: 20px;"></i> Pendiente
+          </a>
+          <a href="/ordenes/procesando" class="btn btn-primary btn-sm rounded-pill px-4">
+            <i data-lucide="RefreshCw" style="width: 20px; height: 20px;"></i> Procesando
+          </a>
+          <a href="/ordenes/canceladas" class="btn btn-primary btn-sm rounded-pill px-4">
+            <i data-lucide="XCircle" style="width: 20px; height: 20px;"></i> Canceladas
+          </a>
+        </div>
+
+        <div class="card shadow-sm">
+          <div class="table-responsive" style="max-height: 700px; overflow: auto;">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>Fecha</th>
+                  <th>N° Orden</th>
+                  <th>Cliente</th>
+                  <th>Enfermero(a)</th>
+                  <th>Estado</th>
+                  <th class="text-center">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% ordenes.forEach(function(orden){ %>
+                  <tr>
+                    <td>
+                      <span>
+                        <%= fecha(orden.fecha) %>
+                      </span>
+                    </td>
+                    <td>
+                      <span class="fw-bold ">
+                        #<%= orden.numero_orden %>
+                      </span>
+                    </td>
+                    <td>
+                      <p class="fw-bold">
+                        <%= orden.nombre_cliente + ' ' + orden.apellido_cliente %> <br>
+                          <span class="text-muted fw-medium">
+                            <%= orden.cedula %>
+                          </span>
+                      </p>
+                    </td>
+                    <td>
+                      <span class="fw-bold">
+                        <%= orden.nombre_encargado + ' ' + orden.apellido_encargado %>
+                      </span>
+                    </td>
+                    <td><span class="badge rounded-pill px-3 text-capitalize <%= color(orden.estado) %>">
+                        <%= orden.estado %>
+                      </span></td>
+                    <td class="text-center">
+                      <div class="d-flex flex-column gap-2">
+                        <div>
+                          <a class="btn btn-outline-primary btn-sm" href="/ordenes/uno/<%= orden.id_orden %>">
+                            </i> Detalles
+                          </a>
+                          <% if(orden.observaciones){ %>
+                            <button class="btn btn-outline-secondary btn-sm" data-bs-target="#obsModal"
+                              data-bs-toggle="modal"
+                              onclick="obs('<%= orden.observaciones %>','<%= orden.numero_orden %>')">
+                              Observaciones
+                            </button>
+                            <% } %>
+                        </div>
+                        <div>
+                          <button class="btn btn-primary rounded-circle btn-sm" data-bs-target="#agregarOrden"
+                            data-bs-toggle="modal" onclick="editarOrden('<%= JSON.stringify(orden) %>')">
+                            <i data-lucide="pencil" style="width: 20px; height: 20px;"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <% }) %>
+                    <% if (ordenes.length < 1){ %>
+                      <td colspan="6" class="text-center">
+                        <i data-lucide="file-x-corner"></i>
+                        </i>
+                        No hay ordenes registradas
+                      </td>
+                      <%}%>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <div class="modal fade" id="agregarOrden" tabindex="-1" aria-labelledby="agregarOrdenLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+          <form method="post" action="/ordenes/crear" id="formulario" class="row g-3 needs-validation" novalidate>
+
+            <div class="modal-body px-5">
+              <h4 class="modal-title mb-4 text-center" id="agregarOrdenLabel">Nueva orden</h4>
+
+              <div class="row g-3">
+                <div class="col-md-6 text-start">
+                  <label class="form-label small fw-bold">Cliente</label>
+                  <select class="form-select" id="selectCliente" name="id_cli" required>
+                    <option value="" selected disabled>Elija un cliente...</option>
+                    <% clientes.forEach(function(cliente){ %>
+                      <option class="text-capitalize" value="<%= cliente.id_cli %>">
+                        <%= cliente.nombre + ' ' + cliente.apellido + ' ' + cliente.cedula %>
+                      </option>
+                      <% })%>
+                  </select>
+                </div>
+                <div class="col-md-6 text-start">
+                  <label class="form-label small fw-bold">Encargado</label>
+                  <select class="form-select" id="selectUsuario" name="id_usu" required>
+                    <option value="" selected disabled>Elija un Enfermero(a)...</option>
+                    <% enfermeros.forEach(function(enfermero){ %>
+                      <option class="text-capitalize" value="<%= enfermero.id_usu %>">
+                        <%= enfermero.nombre + ' ' + enfermero.apellido %>
+                      </option>
+                      <% })%>
+                  </select>
+                </div>
+                <div class="col-6 text-start">
+                  <label for="Observaciones" class="form-label text-capitalize fw-bold">Observaciones</label>
+                  <textarea class="form-control" style="resize: none;" name="observaciones" id="observaciones" rows="2"
+                    placeholder="Observación"></textarea>
+                </div>
+              </div>
+              <div class="row g-3">
+                <hr class="my-4">
+                <h5 class="text-secondary mb-3"><i data-lucide="package"></i> Lista de examenes</h5>
+
+                <div class="row g-2 align-items-end">
+                  <div class="col-md-6 text-start">
+                    <label class="form-label small fw-bold text-primary">Examenes</label>
+                    <select class="form-select" id="selectExamen">
+                      <option value="" selected disabled>Elija un examen...</option>
+                      <% examenes.forEach(function(examen){ %>
+                        <option class="text-capitalize" value='<%= JSON.stringify(examen) %>'>
+                          <%= examen.nombre + ' ' + examen.codigo %>
+                        </option>
+                        <% })%>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <button type="button" class="btn btn-dark" id="btnAgregarExamen" onclick="agregarLista()">
+                      <i data-lucide="plus" style="width: 20px; height: 20px;"></i> Agregar
+                    </button>
+                  </div>
+                </div>
+                <input type="hidden" name="lista_examenes" id="lista_examenes">
+                <div class="col-12 mt-3">
+                  <div class="table-responsive">
+                    <table class="table table-sm table-hover border">
+                      <thead class="table-light">
+                        <tr>
+                          <th>Codigo</th>
+                          <th class="text-center">Examen</th>
+                          <th class="text-center">¿Requiere ayuno?</th>
+                          <th class="text-center">Precio</th>
+                          <th class="text-center">Acción</th>
+                        </tr>
+                      </thead>
+                      <tbody id="tablaExamenesBody">
+                        <tr id="filaVacia">
+                          <td colspan="5" class="text-center text-muted small">No hay examenes asignados</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer border-0 justify-content-center pb-4">
+              <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Cancelar</button>
+              <button type="submit" class="btn btn-primary btn-sm px-4" id="botonGuardar" disabled>Aceptar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="obsModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header border-0">
+            <h5 class="modal-title">Observaciones de la Orden <span id="titulo_obs"></span></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <p class="text-muted" id="texto_obs"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="position-fixed top-0 d-flex justify-content-center w-100" style="z-index: 11;">
+      <% if (mensaje) { %>
+        <div
+          class="alert alert-<%= status == 201 || status == 200 ? 'success' : 'danger' %> alert-dismissible fade show m-3"
+          role="alert" style="width: 30%;">
+          <strong>
+            <%= mensaje %>
+          </strong>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <% } %>
+    </div>
+    <script>
+      lucide.createIcons();
+
+      (() => {
+        'use strict'
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll('.needs-validation')
+        console.log(Array.from(forms));
+
+        // Loop over them and prevent submission
+        Array.from(forms).forEach(form => {
+          form.addEventListener('submit', event => {
+            if (!form.checkValidity()) {
+              event.preventDefault()
+              event.stopPropagation()
+            }
+
+            form.classList.add('was-validated')
+          }, false)
+        })
+      })()
+
+      setTimeout(() => {
+        const alertElement = document.querySelector('.alert');
+        if (alertElement) {
+          const alert = new bootstrap.Alert(alertElement);
+          alert.close();
+        }
+      }, 3000);
+
+      let examenes = []
+
+      function agregarLista() {
+        const examen = document.getElementById('selectExamen')
+        const camposHidden = document.getElementById('lista_examenes')
+        if (examen.value == '') {
+          return;
+        }
+        const x = examen.value
+        const temp = x.replace(/\\/g, "\\\\")
+          .replace(/\n/g, "\\n")
+          .replace(/\r/g, "\\r")
+          .replace(/\t/g, "\\t")
+          .replace(/'/g, "&#39;");
+        const datos = JSON.parse(temp)
+        const existe = examenes.find(e => e.id_examen === datos.id_examen)
+        if (existe) {
+          alert("Este examen ya está en la lista.");
+          return;
+        }
+        examenes.push(datos)
+        actualizarTabla()
+        examen.value = ''
+        if (examenes.length > 0) {
+          const boton = document.getElementById('botonGuardar');
+          boton.disabled = false;
+        }
+        camposHidden.value = JSON.stringify(examenes)
+      }
+
+      function actualizarTabla() {
+        const tbody = document.getElementById('tablaExamenesBody');
+        tbody.innerHTML = "";
+
+        if (examenes.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted small">No hay examenes asignados</td></tr>`;
+          return;
+        }
+
+        examenes.forEach((e, index) => {
+          const fila = `
+            <tr>
+                <td class="align-middle">${e.codigo}</td>
+                <td class="text-center align-middle">${e.nombre}</td>
+                <td class="text-center align-middle">${e.nombre}</td>
+                <td class="text-center align-middle">${e.precio}</td>
+                <td class="text-center">
+                    <button type="button" class="btn btn-outline-danger btn-sm" onclick="eliminarExamen(${index})">
+                        Eliminar
+                    </button>
+                </td>
+            </tr>
+        `;
+          tbody.innerHTML += fila;
+        });
+      }
+
+      function eliminarExamen(index) {
+        examenes.splice(index, 1);
+        actualizarTabla();
+        if (examenes.length == 0) {
+          const boton = document.getElementById('botonGuardar');
+          boton.disabled = true;
+        }
+      }
+
+      function obs(texto, numero) {
+        const text = document.getElementById('texto_obs')
+        const titulo = document.getElementById('titulo_obs')
+
+        if (texto.trim() != '') {
+          text.textContent = texto
+        } else {
+          text.textContent = 'Sin observaciones'
+        }
+        if (numero) {
+          titulo.textContent = numero
+        } else {
+          titulo.textContent = 'Sin numero'
+        }
+      }
+
+      function editarOrden(objeto) {
+        const form = document.getElementById('formulario')
+        const camposHidden = document.getElementById('lista_examenes')
+        const boton = document.getElementById('botonGuardar');
+        const temp = objeto.replace(/\\/g, "\\\\")
+          .replace(/\n/g, "\\n")
+          .replace(/\r/g, "\\r")
+          .replace(/\t/g, "\\t")
+          .replace(/'/g, "&#39;");
+        const datos = JSON.parse(temp)
+        console.log(datos)
+        form.id_cli.value = datos.id_cli
+        form.id_usu.value = datos.id_usu
+        form.observaciones.value = datos.observaciones
+        examenes = datos.lista_examenes
+        if (examenes.length > 0) {
+          boton.disabled = false;
+        }
+        camposHidden.value = JSON.stringify(examenes)
+        actualizarTabla()
+        form.action = '/ordenes/editar/' + datos.id_orden + '?_method=PUT'
+      }
+
+      function limpiar() {
+        const form = document.getElementById('formulario')
+        form.id_cli.value = ''
+        form.id_usu.value = ''
+        form.observaciones.value = ''
+        examenes = []
+        document.getElementById('selectExamen').value = ''
+        form.action = '/ordenes/crear'
+        actualizarTabla()
+      }
+
+    </script>
+    <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  </body>
+
+  </html>

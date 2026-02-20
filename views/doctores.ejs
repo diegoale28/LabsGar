@@ -43,7 +43,16 @@
             <a class="nav-link active" href="/doctores">Doctores</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Contacto</a>
+            <a class="nav-link " href="/ordenes">Ordenes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/historias">Historias</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/resultados">Resultados</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/ventas">Ventas</a>
           </li>
         </ul>
 
@@ -71,12 +80,12 @@
           </div>
         </form>
         <form action="/doctores" method="get">
-          <button type="submit" class="btn btn-secondary"><i data-lucide="rotate-ccw"></i></button>
+          <button type="submit" class="btn btn-secondary btn-sm"><i data-lucide="rotate-ccw"></i></button>
         </form>
       </div>
     </div>
     <div class="col-12 d-flex gap-4 mb-5">
-      <button type="button" class="btn btn-primary rounded-pill px-4" data-bs-toggle="modal"
+      <button type="button" class="btn btn-primary btn-sm rounded-pill px-4" data-bs-toggle="modal"
         data-bs-target="#agregarDoctor" onclick="limpiar()">
         <i data-lucide="stethoscope"></i> Agregar Doctor
       </button>
@@ -94,7 +103,8 @@
                 </div>
                 <div>
                   <h5 class="fw-bold mb-2 text-dark">
-                    <%= doctor.nombre %> - <%= doctor.apellido %>
+                    <%= doctor.nombre %>
+                      <%= doctor.apellido %>
                   </h5>
                   <span class="badge-especialidad bg-warning text-black">
                     <%= doctor.especialidad %>
@@ -113,13 +123,13 @@
 
               </div>
               <div class="d-flex gap-2 border-top pt-3">
-                <button class="btn btn-light flex-grow-1 rounded-pill" data-bs-target="#agregarDoctor"
+                <button class="btn btn-light btn-sm flex-grow-1 rounded-pill" data-bs-target="#agregarDoctor"
                   data-bs-toggle="modal" onclick="editarDoctor('<%= JSON.stringify(doctor) %>')">
-                  <i data-lucide="edit-2" size="16"></i> Editar
+                  <i data-lucide="edit-2" style="width: 20px; height: 20px;"></i> Editar
                 </button>
-                <button class="btn btn-outline-danger border-0 rounded-circle" data-bs-target="#eliminarDoctor"
+                <button class="btn btn-outline-danger btn-sm border-0 rounded-circle" data-bs-target="#eliminarDoctor"
                   data-bs-toggle="modal" onclick="eliminarDoctor('<%= doctor.id_medico %>', '<%= doctor.nombre %>')">
-                  <i data-lucide="trash-2" size="16"></i>
+                  <i data-lucide="trash-2" style="width: 20px; height: 20px;"></i>
                 </button>
               </div>
             </div>
