@@ -82,50 +82,67 @@
       </button>
     </div>
 
-    <div class="row g-4">
-      <% doctores.forEach( function(doctor){ %>
-        <div class="col-4">
+    <% if (doctores.length) { %>
+      <div class="row g-4">
+        <% doctores.forEach( function(doctor){ %>
+          <div class="col-4">
 
-          <div class="card doctor-card p-4 shadow-sm">
-            <div class="d-flex align-items-center mb-4">
-              <div class="avatar-circle text-uppercase me-3">
-                <%= doctor.nombre[0] + doctor.apellido[0] %>
+            <div class="card doctor-card p-4 shadow-sm">
+              <div class="d-flex align-items-center mb-4">
+                <div class="avatar-circle text-uppercase me-3">
+                  <%= doctor.nombre[0] + doctor.apellido[0] %>
+                </div>
+                <div>
+                  <h5 class="fw-bold mb-2 text-dark">
+                    <%= doctor.nombre %> - <%= doctor.apellido %>
+                  </h5>
+                  <span class="badge-especialidad bg-warning text-black">
+                    <%= doctor.especialidad %>
+                  </span>
+                </div>
               </div>
-              <div>
-                <h5 class="fw-bold mb-2 text-dark">
-                  <%= doctor.nombre %> - <%= doctor.apellido %>
-                </h5>
-                <span class="badge-especialidad bg-warning text-black">
-                  <%= doctor.especialidad %>
-                </span>
+              <div class="contact-info mb-4">
+                <div class="d-flex align-items-center mb-2">
+                  <i data-lucide="phone" size="14" class="me-2"></i>
+                  <%= doctor.telefono %>
+                </div>
+                <div class="d-flex align-items-center">
+                  <i data-lucide="map-pinned" size="14" class="me-2"></i>
+                  <%= doctor.direccion %>
+                </div>
+
+              </div>
+              <div class="d-flex gap-2 border-top pt-3">
+                <button class="btn btn-light flex-grow-1 rounded-pill" data-bs-target="#agregarDoctor"
+                  data-bs-toggle="modal" onclick="editarDoctor('<%= JSON.stringify(doctor) %>')">
+                  <i data-lucide="edit-2" size="16"></i> Editar
+                </button>
+                <button class="btn btn-outline-danger border-0 rounded-circle" data-bs-target="#eliminarDoctor"
+                  data-bs-toggle="modal" onclick="eliminarDoctor('<%= doctor.id_medico %>', '<%= doctor.nombre %>')">
+                  <i data-lucide="trash-2" size="16"></i>
+                </button>
               </div>
             </div>
-            <div class="contact-info mb-4">
-              <div class="d-flex align-items-center mb-2">
-                <i data-lucide="phone" size="14" class="me-2"></i>
-                <%= doctor.telefono %>
-              </div>
-              <div class="d-flex align-items-center">
-                <i data-lucide="map-pinned" size="14" class="me-2"></i>
-                <%= doctor.direccion %>
-              </div>
 
-            </div>
-            <div class="d-flex gap-2 border-top pt-3">
-              <button class="btn btn-light flex-grow-1 rounded-pill" data-bs-target="#agregarDoctor"
-                data-bs-toggle="modal" onclick="editarDoctor('<%= JSON.stringify(doctor) %>')">
-                <i data-lucide="edit-2" size="16"></i> Editar
-              </button>
-              <button class="btn btn-outline-danger border-0 rounded-circle" data-bs-target="#eliminarDoctor"
-                data-bs-toggle="modal" onclick="eliminarDoctor('<%= doctor.id_medico %>', '<%= doctor.nombre %>')">
-                <i data-lucide="trash-2" size="16"></i>
-              </button>
+          </div>
+          <% }) %>
+      </div>
+      <% } else { %>
+        <div id="seccionVacia" class="text-center py-5 mt-5 animate__animated animate__fadeIn">
+          <div class="mb-4">
+            <div class="bg-light d-inline-flex align-items-center justify-content-center rounded-circle"
+              style="width: 120px; height: 120px;">
+              <i data-lucide="search-x" class="text-muted" style="width: 60px; height: 60px;"></i>
             </div>
           </div>
-
+          <h3 class="fw-bold text-dark">No se encontraron doctores</h3>
+          <p class="text-secondary mx-auto" style="max-width: 400px;">
+            Parece que no hay especialistas registrados con esos criterios. Prueba con otra búsqueda o agrega uno nuevo.
+          </p>
         </div>
-        <% }) %>
-    </div>
+        <% } %>
+
+
   </main>
 
   <div class="modal fade" id="eliminarDoctor" tabindex="-1" aria-labelledby="eliminarDoctorLabel" aria-hidden="true">
@@ -284,7 +301,7 @@
       form.direccion.value = data.direccion
       form.telefono.value = data.telefono.split('-')[1]
       form.codigo.value = data.telefono.split('-')[0]
-      form.action = '/doctores/editar/'+ data.id_medico + '?_method=PUT'
+      form.action = '/doctores/editar/' + data.id_medico + '?_method=PUT'
     }
 
     function limpiar() {

@@ -240,8 +240,9 @@ class examenM {
       const insumosExamen = JSON.parse(insumos_utilizados || '[]')
       const examenInsertar = [id, nombre, codigo, descripcion, precio, duracion_minutos, ayuno, instrucciones_preparacion]
       const sql = 'INSERT INTO  examen (id_examen, nombre, codigo, descripcion, precio, duracion_estimada, requiere_ayuno, instrucciones_preparacion) VALUES (?,?,?,?,?,?,?,?)';
-      const sqlInsumos = 'INSERT INTO insumos_utilizados (id_insumo_utilizado, id_examen, id_insumo, cantidad_insumo) VALUES (?,?,?,?)';
+      const sqlInsumos = 'INSERT INTO insumos_utilizados (id_insumo_utilizado, id_examen, id_insumo, cantidad_insumo) VALUES ?';
       const valido = camposRequeridos({ nombre, codigo, descripcion, precio, duracion_minutos })
+      let datos = []
       if (!valido.resultado) {
         return reject({ mensaje: valido.mensaje, status: 400 })
       }
@@ -268,19 +269,20 @@ class examenM {
             const todo = await this.todoExamen()
             return resolve({ examenes: todo.examenes, insumos: todo.insumos, mensaje: insert.mensaje, status: insert.status })
           }
+
           for (const insumo of insumosExamen) {
-            const data = [uuidv4(), id, insumo.id_insumo, insumo.cantidad_insumo]
-            await new Promise((resolve, reject) => {
-              db.query(sqlInsumos, data, function (err, res) {
-                if (err) {
-                  return db.rollback(function () {
-                    return reject({ mensaje: err, status: 500 })
-                  });
-                }
-                resolve({ mensaje: 'Exito', data: data, status: 201 })
-              })
-            })
+            datos.push([uuidv4(), id, insumo.id_insumo, insumo.cantidad_insumo])
           }
+          await new Promise((resolve, reject) => {
+            db.query(sqlInsumos, [datos], function (err, res) {
+              if (err) {
+                return db.rollback(function () {
+                  return reject({ mensaje: err, status: 500 })
+                });
+              }
+              resolve({ mensaje: 'Exito', data: datos, status: 201 })
+            })
+          })
           const todo = await this.todoExamen()
           db.commit(function (err) {
             if (err) {
@@ -307,8 +309,9 @@ class examenM {
       const examenEditar = [nombre, codigo, descripcion, precio, duracion_minutos, ayuno, instrucciones_preparacion, id]
       const insumosExamen = JSON.parse(insumos_utilizados || '[]')
       const sql = 'UPDATE examen SET nombre = ?, codigo = ?, descripcion = ?, precio = ?, duracion_estimada = ?, requiere_ayuno = ?, instrucciones_preparacion = ?  WHERE id_examen = ?';
-      const sqlInsumos = 'INSERT INTO insumos_utilizados (id_insumo_utilizado, id_examen, id_insumo, cantidad_insumo) VALUES (?,?,?,?)';
+      const sqlInsumos = 'INSERT INTO insumos_utilizados (id_insumo_utilizado, id_examen, id_insumo, cantidad_insumo) VALUES ?';
       const eliminarRelacion = 'DELETE FROM insumos_utilizados WHERE id_examen = ?'
+      let datos = []
       const valido = camposRequeridos({ nombre, codigo, descripcion, precio, duracion_minutos, instrucciones_preparacion })
       if (!valido.resultado) {
         return reject({ mensaje: valido.mensaje, status: 400 })
@@ -342,19 +345,18 @@ class examenM {
             })
           })
           for (const insumo of insumosExamen) {
-            const data = [uuidv4(), id, insumo.id_insumo, insumo.cantidad_insumo]
-
-            await new Promise((resolve, reject) => {
-              db.query(sqlInsumos, data, function (err, res) {
-                if (err) {
-                  return db.rollback(function () {
-                    return reject({ mensaje: err, status: 500 })
-                  });
-                }
-                resolve({ mensaje: 'Exito', data: data, status: 201 })
-              })
-            })
+            datos.push([uuidv4(), id, insumo.id_insumo, insumo.cantidad_insumo])
           }
+          await new Promise((resolve, reject) => {
+            db.query(sqlInsumos, [datos], function (err, res) {
+              if (err) {
+                return db.rollback(function () {
+                  return reject({ mensaje: err, status: 500 })
+                });
+              }
+              resolve({ mensaje: 'Exito', data: datos, status: 201 })
+            })
+          })
           const todo = await this.todoExamen()
           db.commit(function (err) {
             if (err) {
