@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js"
+    integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y"
+    crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <title>
+    <%= titulo %>
+  </title>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="/clientes">
+        <figure class="mb-0">
+          <img src="/images/labsgar.png" alt="labsgar" width="30" height="30" class="d-inline-block align-text-center">
+          LabsGar
+        </figure>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+
+        <ul class="navbar-nav mx-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="/">Inicio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Servicios</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Proyectos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Contacto</a>
+          </li>
+        </ul>
+
+        <div class="d-flex">
+          <a href="#" class="btn btn-primary rounded-pill px-4">Empezar</a>
+        </div>
+
+      </div>
+    </div>
+  </nav>
+
+  <main class="p-4 mx-auto" style="width: 90%;">
+    <div class="d-flex align-items-start gap-4 my-2">
+      <div class="card w-25">
+        <div class="card-body">
+          <h4 class="card-title"> <i data-lucide="user-plus"></i> <span id="titulo">Crear cliente nuevo</span></h4>
+          <form method="post" action="/clientes/crear" id="formulario" class="row g-3 needs-validation" novalidate>
+            <div class="col-12">
+              <label for="nombre" class="form-label text-capitalize">nombre</label>
+              <input type="text" autocomplete="off" class="form-control" name="nombre" placeholder="Nombre del cliente"
+                id="nombre" value="" required>
+              <div class="valid-feedback">
+              </div>
+              <div class="invalid-feedback">
+                Por favor ingrese un nombre válido.
+              </div>
+            </div>
+            <div class="col-12">
+              <label for="apellido" class="form-label text-capitalize">apellido</label>
+              <input type="text" autocomplete="off" class="form-control" name="apellido"
+                placeholder="Apellido del cliente" id="apellido" value="" required>
+              <div class="valid-feedback">
+              </div>
+              <div class="invalid-feedback">
+                Por favor ingrese un apellido válido.
+              </div>
+            </div>
+            <div class="col-12">
+              <label for="cedula" class="form-label text-capitalize">cedula</label>
+              <div class="d-flex gap-2">
+                <select class="form-select form-select w-25" name="prefijo" id="prefijo" required>
+                  <option selected value=""></option>
+                  <option value="V-">V-</option>
+                  <option value="J-">J-</option>
+                  <option value="E-">E-</option>
+                </select>
+                <input type="text" autocomplete="off" class="form-control w-75" name="cedula"
+                  placeholder="Cedula del cliente" maxlength="9" id="cedula" value="" required>
+              </div>
+              <div class="valid-feedback">
+              </div>
+              <div class="invalid-feedback">
+                Cedula debe tener un prefijo válido (V-, J-, E-) seguido de hasta 9 dígitos.
+              </div>
+            </div>
+            <div class="col-12">
+              <label for="telefono" class="form-label text-capitalize">Teléfono</label>
+              <div class="d-flex gap-2">
+                <select class="form-select form-select w-25" name="codigo" id="codigo">
+                  <option selected value=""></option>
+                  <option value="0424">0424</option>
+                  <option value="0414">0414</option>
+                  <option value="0426">0426</option>
+                  <option value="0416">0416</option>
+                  <option value="0412">0412</option>
+                  <option value="0422">0422</option>
+                </select>
+                <input type="number" autocomplete="off" class="form-control w-75" name="telefono"
+                  placeholder="Teléfono del cliente" maxlength="7" id="telefono" value="">
+              </div>
+              <div class="valid-feedback">
+              </div>
+              <div class="invalid-feedback">
+                Teléfono debe tener un prefijo válido (0424, 0414, 0426, 0416, 0412, 0422) seguido de 7 dígitos.
+              </div>
+            </div>
+            <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+              <input type="radio" autocomplete="off" class="btn-check" name="genero" id="btncheck1" value="M"
+                autocomplete="off" />
+              <label class="btn btn-outline-primary" for="btncheck1">Masculino</label>
+
+              <input type="radio" autocomplete="off" class="btn-check" name="genero" id="btncheck2" value="F"
+                autocomplete="off" />
+              <label class="btn btn-outline-primary" for="btncheck2">Femenino</label>
+
+              <input type="radio" autocomplete="off" class="btn-check" name="genero" id="btncheck3" value="Otro"
+                autocomplete="off" />
+              <label class="btn btn-outline-primary" for="btncheck3">Otro..</label>
+            </div>
+
+            <div class="mb-3">
+              <label for="direccion" class="form-label text-capitalize">dirección</label>
+              <textarea class="form-control" name="direccion" id="direccion" rows="3" style="resize: none;"
+                required></textarea>
+            </div>
+
+            <div class="col-12 d-flex justify-content-center btn-group" role="group">
+              <button class="btn btn-primary" type="submit"> <i data-lucide="check"></i> <span id="texto-boton">Crear
+                  cliente</span></button>
+              <button class="btn btn-secondary" type="button" onclick="limipiar()"> <i data-lucide="brush-cleaning"></i>
+                Limpiar</button>
+            </div>
+          </form>
+          <p class="card-text"></p>
+        </div>
+      </div>
+
+      <div class="card flex-grow-1" style="max-height: 660px; overflow-y: auto;">
+        <div class="card-body">
+          <table class="table table-hover">
+            <thead class="position-sticky top-0">
+              <tr>
+                <td colspan="4" class="bg-white">
+                  <h5 class="card-title p-2">Lista de clientes</h5>
+                </td>
+                <td colspan="2">
+                  <div class="d-flex gap-2">
+                    <form action="/clientes/uno" method="post" class="flex-grow-1">
+                      <div class="input-group mb-3">
+                        <input type="text" class="form-control" name="cedulaBuscar" placeholder="Buscar por cédula"
+                          aria-label="Buscar por cédula" aria-describedby="button-search" autocomplete="off">
+                        <button class="btn btn-outline-secondary" type="submit" id="button-search"><i
+                            data-lucide="search"></i></button>
+                      </div>
+                    </form>
+                    <form action="/clientes" method="get">
+                      <button type="submit" class="btn btn-secondary"><i data-lucide="rotate-ccw"></i></button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th scope="col">Nombre y apellido</th>
+                <th scope="col">Cedula</th>
+                <th scope="col">Telefono</th>
+                <th scope="col">Genero</th>
+                <th scope="col">Dirección</th>
+                <th scope="col">Opciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (clientes.length) { %>
+                <% clientes.forEach(function(cliente) { %>
+                  <tr style="vertical-align: center;">
+                    <td scope="row" class="text-capitalize">
+                      <%= cliente.nombre %>
+                        <%= cliente.apellido %>
+                    </td>
+                    <td>
+                      <%= cliente.cedula %>
+                    </td>
+                    <td>
+                      <%= cliente.telefono ? cliente.telefono : 'Sin número' %>
+                    </td>
+                    <td>
+                      <%= cliente.genero %>
+                    </td>
+                    <td class="text-wrap text-capitalize" style="max-width: 200px;">
+                      <%= cliente.direccion %>
+                    </td>
+                    <td>
+                      <button type="button" class="btn btn-primary"
+                        onclick="seleccionarCliente('<%= JSON.stringify(cliente) %>')"><i
+                          data-lucide="pen"></i></button>
+                      <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                        data-bs-target="#deleteClientModal"
+                        onclick="clienteEliminar('<%= cliente.id_cli %>', '<%= cliente.nombre %> <%= cliente.apellido %>')"><i
+                          data-lucide="trash-2"></i></button>
+                    </td>
+                  </tr>
+                  <% }); %>
+                    <% } else { %>
+                      <tr>
+                        <td colspan="6" class="text-center">
+                          <i data-lucide="file-badge"></i>
+                          No hay clientes registrados.
+                        </td>
+                      </tr>
+                      <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </main>
+  <div class="position-fixed top-0 d-flex justify-content-center w-100" style="z-index: 11;">
+    <% if (mensaje) { %>
+      <div
+        class="alert alert-<%= status == 201 || status == 200 ? 'success' : 'danger' %> alert-dismissible fade show m-3"
+        role="alert" style="width: 30%;">
+        <strong>
+          <%= mensaje %>
+        </strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      <% } %>
+  </div>
+
+  <div class="modal fade" id="deleteClientModal" tabindex="-1" aria-labelledby="deleteClientModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header border-0 pb-0">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center pt-0">
+          <div class="text-danger mb-3">
+            <i data-lucide="trash-2" style="width: 64px; height: 64px;"></i>
+          </div>
+          <h4 class="modal-title mb-2" id="deleteClientModalLabel">¿Eliminar cliente?</h4>
+          <p class="text-muted">Esta acción no se puede deshacer. El cliente <strong><span
+                id="clientNameDisplay"></span></strong> será borrado permanentemente de la base de datos.</p>
+        </div>
+        <div class="modal-footer border-0 justify-content-center pb-4">
+          <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Cancelar</button>
+          <form id="eliminarForm" method="POST" action="">
+            <button type="submit" class="btn btn-danger px-4">Eliminar Cliente</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    lucide.createIcons();
+  </script>
+  <script>
+    (() => {
+      'use strict'
+
+      // Fetch all the forms we want to apply custom Bootstrap validation styles to
+      const forms = document.querySelectorAll('.needs-validation')
+      console.log(Array.from(forms));
+
+      // Loop over them and prevent submission
+      Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+
+          form.classList.add('was-validated')
+        }, false)
+      })
+    })()
+  </script>
+  <script>
+    setTimeout(() => {
+      const alertElement = document.querySelector('.alert');
+      if (alertElement) {
+        const alert = new bootstrap.Alert(alertElement);
+        alert.close();
+      }
+    }, 3000);
+
+    function seleccionarCliente(cliente) {
+      const temp = cliente.replace(/\\/g, "\\\\")
+        .replace(/\n/g, "\\n")
+        .replace(/\r/g, "\\r")
+        .replace(/\t/g, "\\t")
+        .replace(/'/g, "&#39;");
+      const data = JSON.parse(temp)
+      const form = document.getElementById('formulario')
+      form.nombre.value = data.nombre
+      form.apellido.value = data.apellido
+      form.cedula.value = data.cedula.split('-')[1]
+      document.getElementById('prefijo').value = data.cedula.match(/^[VEJ]-/)[0]
+      if (data.telefono) {
+        form.telefono.value = data.telefono.split('-')[1]
+        document.getElementById('codigo').value = data.telefono.split('-')[0]
+      }
+      form.genero.value = data.genero
+      form.direccion.value = data.direccion
+      document.getElementById('titulo').textContent = `Editando cliente: ${data.nombre} ${data.apellido}`
+      form.action = `/clientes/editar/${data.id_cli}?_method=PUT`
+      document.getElementById('texto-boton').textContent = 'Editar cliente'
+    }
+
+    function clienteEliminar(id, nombre) {
+      document.getElementById('clientNameDisplay').textContent = nombre
+      document.getElementById('eliminarForm').action = `/clientes/eliminar/${id}?_method=DELETE`
+    }
+
+    function limipiar() {
+      const form = document.getElementById('formulario')
+      form.nombre.value = ''
+      form.apellido.value = ''
+      form.cedula.value = ''
+      document.getElementById('prefijo').value = ''
+      form.telefono.value = ''
+      document.getElementById('codigo').value = ''
+      document.querySelectorAll('[name=genero]').forEach((x) => x.checked = false);
+      form.direccion.value = ''
+      document.getElementById('titulo').textContent = `Crear cliente nuevo`
+      form.action = `/clientes/crear`
+      form.classList.remove('was-validated')
+      document.getElementById('texto-boton').textContent = 'Crear cliente'
+    }
+  </script>
+</body>
+
+</html>

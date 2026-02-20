@@ -13,9 +13,9 @@ class clientesC {
 
   }
 
-  uno(id) {
+  uno(cedula) {
     return new Promise((resolve, reject) => {
-      clientesM.uno(id)
+      clientesM.uno(cedula)
         .then((res) => {
           resolve(res)
         }).catch((err) => {
