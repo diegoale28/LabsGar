@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link href="/stylesheets/doctores.css" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <title>
+    <%= titulo %>
+  </title>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="/">
+        <figure class="mb-0">
+          <img src="/images/labsgar.png" alt="labsgar" width="30" height="30" class="d-inline-block align-text-center">
+          LabsGar
+        </figure>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+
+        <ul class="navbar-nav mx-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/">Inicio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/examenes">Examenes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/clientes">Clientes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/doctores">Doctores</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Contacto</a>
+          </li>
+        </ul>
+
+        <div class="d-flex">
+          <a href="#" class="btn btn-primary rounded-pill px-4">Empezar</a>
+        </div>
+
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-5">
+    <div class="row mb-5 align-items-center">
+      <div class="col-md-6">
+        <h1 class="display-6 fw-bold text-dark mb-1">Directorio Médico</h1>
+        <p class="text-secondary">Gestiona la red de especialistas vinculados</p>
+      </div>
+      <div class="col-md-6 d-flex gap-2 justify-content-end">
+        <form action="/doctores/uno" method="post">
+          <div class="input-group">
+            <input type="text" class="form-control" name="especialidad" placeholder="Buscar por especialidad"
+              aria-label="Buscar por especialidad" aria-describedby="button-search" autocomplete="off">
+            <button class="btn btn-outline-secondary" type="submit" id="button-search"><i data-lucide="search"></i>
+            </button>
+          </div>
+        </form>
+        <form action="/doctores" method="get">
+          <button type="submit" class="btn btn-secondary"><i data-lucide="rotate-ccw"></i></button>
+        </form>
+      </div>
+    </div>
+    <div class="col-12 d-flex gap-4 mb-5">
+      <button type="button" class="btn btn-primary rounded-pill px-4" data-bs-toggle="modal"
+        data-bs-target="#agregarDoctor" onclick="limpiar()">
+        <i data-lucide="stethoscope"></i> Agregar Doctor
+      </button>
+    </div>
+
+    <div class="row g-4">
+      <% doctores.forEach( function(doctor){ %>
+        <div class="col-4">
+
+          <div class="card doctor-card p-4 shadow-sm">
+            <div class="d-flex align-items-center mb-4">
+              <div class="avatar-circle text-uppercase me-3">
+                <%= doctor.nombre[0] + doctor.apellido[0] %>
+              </div>
+              <div>
+                <h5 class="fw-bold mb-2 text-dark">
+                  <%= doctor.nombre %> - <%= doctor.apellido %>
+                </h5>
+                <span class="badge-especialidad bg-warning text-black">
+                  <%= doctor.especialidad %>
+                </span>
+              </div>
+            </div>
+            <div class="contact-info mb-4">
+              <div class="d-flex align-items-center mb-2">
+                <i data-lucide="phone" size="14" class="me-2"></i>
+                <%= doctor.telefono %>
+              </div>
+              <div class="d-flex align-items-center">
+                <i data-lucide="map-pinned" size="14" class="me-2"></i>
+                <%= doctor.direccion %>
+              </div>
+
+            </div>
+            <div class="d-flex gap-2 border-top pt-3">
+              <button class="btn btn-light flex-grow-1 rounded-pill" data-bs-target="#agregarDoctor"
+                data-bs-toggle="modal" onclick="editarDoctor('<%= JSON.stringify(doctor) %>')">
+                <i data-lucide="edit-2" size="16"></i> Editar
+              </button>
+              <button class="btn btn-outline-danger border-0 rounded-circle" data-bs-target="#eliminarDoctor"
+                data-bs-toggle="modal" onclick="eliminarDoctor('<%= doctor.id_medico %>', '<%= doctor.nombre %>')">
+                <i data-lucide="trash-2" size="16"></i>
+              </button>
+            </div>
+          </div>
+
+        </div>
+        <% }) %>
+    </div>
+  </main>
+
+  <div class="modal fade" id="eliminarDoctor" tabindex="-1" aria-labelledby="eliminarDoctorLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header border-0 pb-0">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center pt-0">
+          <div class="text-danger mb-3">
+            <i data-lucide="trash-2" style="width: 64px; height: 64px;"></i>
+          </div>
+          <h4 class="modal-title mb-2" id="eliminarDoctorLabel">¿Eliminar doctor <span id="nombre_doctor"
+              class="text-capitalize"></span>?</h4>
+          <p class="text-muted">Esta acción no se puede deshacer.</p>
+        </div>
+        <div class="modal-footer border-0 justify-content-center pb-4">
+          <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Cancelar</button>
+          <form id="eliminarDoctorForm" method="POST" action="">
+            <button type="submit" class="btn btn-danger px-4">Eliminar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="position-fixed top-0 d-flex justify-content-center w-100" style="z-index: 11;">
+    <% if (mensaje) { %>
+      <div
+        class="alert alert-<%= status == 201 || status == 200 ? 'success' : 'danger' %> alert-dismissible fade show m-3"
+        role="alert" style="width: 30%;">
+        <strong>
+          <%= mensaje %>
+        </strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      <% } %>
+  </div>
+
+  <div class="modal fade" id="agregarDoctor" tabindex="-1" aria-labelledby="agregarDoctorLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+      <div class="modal-content">
+        <form method="post" action="/doctores/crear" id="formulario" class="row g-3 needs-validation" novalidate>
+
+          <div class="modal-body px-5">
+            <h4 class="modal-title mb-4 text-center" id="agregarDoctorLabel">Agregar doctor</h4>
+
+            <div class="row g-3">
+
+              <div class="col-6 text-start">
+                <label for="nombre" class="form-label text-capitalize fw-bold">Nombre del doctor</label>
+                <input type="text" autocomplete="off" class="form-control" name="nombre" id="nombre" required>
+                <div class="invalid-feedback">Por favor ingrese un nombre válido.</div>
+              </div>
+
+              <div class="col-6 text-start">
+                <label for="apellido" class="form-label text-capitalize fw-bold">Apellido</label>
+                <input type="text" class="form-control" name="apellido" id="apellido" required>
+                <div class="invalid-feedback">Ingrese un apellido válido.</div>
+              </div>
+
+              <div class="col-12 text-start">
+                <label for="especialidad" class="form-label text-capitalize fw-bold">Especialidad</label>
+                <input type="text" class="form-control" name="especialidad" id="especialidad" required>
+                <div class="invalid-feedback">Ingrese un especialidad válida.</div>
+              </div>
+
+              <div class="col-12">
+                <label for="telefono" class="form-label text-capitalize fw-bold">Teléfono</label>
+                <div class="d-flex gap-2">
+                  <select class="form-select form-select w-25" name="codigo" id="codigo" required>
+                    <option selected value=""></option>
+                    <option value="0424">0424</option>
+                    <option value="0414">0414</option>
+                    <option value="0426">0426</option>
+                    <option value="0416">0416</option>
+                    <option value="0412">0412</option>
+                    <option value="0422">0422</option>
+                  </select>
+                  <input type="number" autocomplete="off" class="form-control w-75" name="telefono"
+                    placeholder="Teléfono del cliente" maxlength="7" id="telefono" value="" required>
+                </div>
+                <div class="valid-feedback">
+                </div>
+                <div class="invalid-feedback">
+                  Teléfono debe tener un prefijo válido (0424, 0414, 0426, 0416, 0412, 0422) seguido de 7 dígitos.
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="direccion" class="form-label text-capitalize fw-bold">dirección</label>
+                <textarea class="form-control" name="direccion" id="direccion" rows="3" style="resize: none;"
+                  required></textarea>
+              </div>
+            </div>
+            <div class="modal-footer border-0 justify-content-center pb-4">
+              <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Cancelar</button>
+              <button type="submit" class="btn btn-primary px-4" id="botonGuardar">Aceptar</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <script>
+    lucide.createIcons();
+
+    (() => {
+      'use strict'
+      // Fetch all the forms we want to apply custom Bootstrap validation styles to
+      const forms = document.querySelectorAll('.needs-validation')
+      console.log(Array.from(forms));
+
+      // Loop over them and prevent submission
+      Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+
+          form.classList.add('was-validated')
+        }, false)
+      })
+    })()
+
+    setTimeout(() => {
+      const alertElement = document.querySelector('.alert');
+      if (alertElement) {
+        const alert = new bootstrap.Alert(alertElement);
+        alert.close();
+      }
+    }, 3000);
+
+
+    function eliminarDoctor(id, nombre) {
+      const form = document.getElementById('eliminarDoctorForm')
+      form.action = '/doctores/eliminar/' + id + '?_method=DELETE'
+      document.getElementById('nombre_doctor').textContent = nombre
+    }
+
+    function editarDoctor(objeto) {
+      const temp = objeto.replace(/\\/g, "\\\\")
+        .replace(/\n/g, "\\n")
+        .replace(/\r/g, "\\r")
+        .replace(/\t/g, "\\t")
+        .replace(/'/g, "&#39;");
+      const data = JSON.parse(temp)
+      const form = document.getElementById('formulario')
+      form.nombre.value = data.nombre
+      form.apellido.value = data.apellido
+      form.especialidad.value = data.especialidad
+      form.direccion.value = data.direccion
+      form.telefono.value = data.telefono.split('-')[1]
+      form.codigo.value = data.telefono.split('-')[0]
+      form.action = '/doctores/editar/'+ data.id_medico + '?_method=PUT'
+    }
+
+    function limpiar() {
+      const form = document.getElementById('formulario')
+      form.nombre.value = ''
+      form.apellido.value = ''
+      form.especialidad.value = ''
+      form.direccion.value = ''
+      form.telefono.value = ''
+      form.codigo.value = null
+      form.action = '/doctores/crear/'
+    }
+
+  </script>
+  <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

@@ -2,69 +2,117 @@ const examenM = require('../models/examenM')
 
 class examenC {
 
-  todos(){
+  todoInsumo() {
     return new Promise((resolve, reject) => {
-      examenM.todos()
-      .then((res) => {
-        resolve(res)
-      }).catch((err) => {
-        reject(err)
-      });
+      examenM.todoInsumo()
+        .then((result) => {
+          resolve(result)
+        }).catch((err) => {
+          reject(err)
+        });
+    })
+
+  }
+
+  unoInsumo(nombre) {
+    return new Promise((resolve, reject) => {
+      examenM.unoInsumo(nombre)
+        .then((result) => {
+          resolve(result)
+        }).catch((err) => {
+
+        });
+    })
+
+  }
+
+  crearInsumo(insumo) {
+    return new Promise((resolve, reject) => {
+      examenM.crearInsumo(insumo)
+        .then((result) => {
+          resolve(result)
+        }).catch((err) => {
+          reject(err)
+        });
+    })
+
+  }
+
+  editarInsumo(insumo, id) {
+    return new Promise((resolve, reject) => {
+      examenM.editarInsumo(insumo, id)
+        .then((result) => {
+          resolve(result)
+        }).catch((err) => {
+          reject(err)
+        });
+    })
+
+  }
+
+  eliminarInsumo(id) {
+    return new Promise((resolve, reject) => {
+      examenM.eliminarInsumo(id)
+        .then((result) => {
+          resolve(result)
+        }).catch((err) => {
+          reject(err)
+        });
     })
   }
 
-  uno(id){
+  todoExamen() {
     return new Promise((resolve, reject) => {
-      examenM.uno(id)
-      .then((res) => {
-        resolve(res)
-      }).catch((err) => {
-        reject(err)
-      });
+      examenM.todoExamen()
+        .then((result) => {
+          resolve(result)
+        }).catch((err) => {
+          reject(err)
+        });
     })
   }
 
-  crear(examen){
-    return new Promise((resolve, reject) => {
-      examenM.crear(examen)
-      .then((res) => {
-        resolve(res)
-      }).catch((err) => {
-        reject(err)
-      });
+  unoExamen(nombre) {
+    return new Promise(async (resolve, reject) => {
+      examenM.unoExamen(nombre)
+        .then((result) => {
+          resolve(result)
+        }).catch((err) => {
+          reject(err)
+        });
     })
   }
 
-  precio(rango){
-    return new Promise((resolve, reject) => {
-      examenM.precio(rango)
-      .then((res) => {
-        resolve(res)
-      }).catch((err) => {
-        reject(err)
-      });
+  crearExamen(examen) {
+    return new Promise(async (resolve, reject) => {
+      examenM.crearExamen(examen)
+        .then((result) => {
+          resolve(result)
+        }).catch((err) => {
+          reject(err)
+        });
     })
   }
 
-  editar(examen, id){
-    return new Promise((resolve, reject) => {
-      examenM.editar(examen, id)
-      .then((res) => {
-        resolve(res)
-      }).catch((err) => {
-        reject(err)
-      });
+  editarExamen(examen, id) {
+    return new Promise(async (resolve, reject) => {
+      examenM.editarExamen(examen, id)
+        .then((result) => {
+          resolve(result)
+        }).catch((err) => {
+          reject(err)
+        });
     })
   }
 
-  eliminar(id){
-    return new Promise((resolve, reject) => {
-      examenM.eliminar(id)
-      .then((res) => {
-        resolve(res)
-      }).catch((err) => {
-        reject(err)
-      });
+  eliminarExamen(id) {
+    return new Promise(async (resolve, reject) => {
+      examenM.eliminarExamen(id)
+        .then((result) => {
+          resolve(result)
+        }).catch((err) => {
+          reject(err)
+        });
     })
   }
 

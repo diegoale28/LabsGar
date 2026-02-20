@@ -206,7 +206,6 @@ class clientesM {
       }
       resolve({ data: clientes.data, mensaje: eliminado.mensaje, status: eliminado.status })
     })
-
   }
 }
 

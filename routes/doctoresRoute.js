@@ -1,75 +1,75 @@
 var express = require('express');
 var router = express.Router();
-const clientesC = require('../controllers/clientesC')
+var doctoresC = require('../controllers/doctoresC')
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  clientesC.todos()
+  doctoresC.todos()
     .then((result) => {
-      res.render('clientes', {
-        titulo: 'Clientes',
-        clientes: result.data,
+      res.render('doctores', {
+        titulo: 'Doctores',
+        doctores: result.data,
         mensaje: result.mensaje,
         status: result.status
-      });
+      })
     }).catch((err) => {
-      res.status(err.status).json(err)
+      res.send(err)
     });
 });
 
 router.post('/uno', function (req, res, next) {
-  clientesC.uno(req.body.cedulaBuscar)
+  doctoresC.uno(req.body.especialidad)
     .then((result) => {
-      res.render('clientes', {
-        titulo: 'Clientes',
-        clientes: result.data,
+      res.render('doctores', {
+        titulo: 'Doctores',
+        doctores: result.data,
         mensaje: result.mensaje,
         status: result.status
-      });
+      })
     }).catch((err) => {
-      res.status(err.status).send(err)
+      res.send(err)
     });
 });
 
 router.post('/crear', function (req, res, next) {
-  clientesC.crear(req.body)
+  doctoresC.crear(req.body)
     .then((result) => {
-      res.render('clientes', {
-        titulo: 'Clientes',
-        clientes: result.data,
+      res.render('doctores', {
+        titulo: 'Doctores',
+        doctores: result.data,
         mensaje: result.mensaje,
         status: result.status
-      });
+      })
     }).catch((err) => {
-      res.status(err.status).send(err)
+      res.send(err)
     });
 });
 
 router.put('/editar/:id', function (req, res, next) {
-  clientesC.editar(req.body, req.params.id)
+  doctoresC.editar(req.body, req.params.id)
     .then((result) => {
-      res.render('clientes', {
-        titulo: 'Clientes',
-        clientes: result.data,
+      res.render('doctores', {
+        titulo: 'Doctores',
+        doctores: result.data,
         mensaje: result.mensaje,
         status: result.status
-      });
+      })
     }).catch((err) => {
-      res.status(err.status).send(err)
+      res.send(err)
     });
 });
 
 router.delete('/eliminar/:id', function (req, res, next) {
-  clientesC.eliminar(req.params.id)
+  doctoresC.eliminar(req.params.id)
     .then((result) => {
-      res.render('clientes', {
-        titulo: 'Clientes',
-        clientes: result.data,
+      res.render('doctores', {
+        titulo: 'Doctores',
+        doctores: result.data,
         mensaje: result.mensaje,
         status: result.status
-      });
+      })
     }).catch((err) => {
-      res.status(err.status).send(err)
+      res.send(err)
     });
 });
 

@@ -1,0 +1,38 @@
+.doctor-card {
+  border-radius: 20px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.doctor-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.avatar-circle {
+  width: 70px;
+  height: 70px;
+  background: #e0f2fe;
+  color: #0369a1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.badge-especialidad {
+  background-color: #f1f5f9;
+  color: #475569;
+  font-weight: 500;
+  font-size: 0.75rem;
+  padding: 0.5em 1em;
+  border-radius: 999px;
+}
+
+.contact-info {
+  font-size: 0.85rem;
+  color: #64748b;
+}

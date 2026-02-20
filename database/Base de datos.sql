@@ -53,6 +53,7 @@ CREATE TABLE clientes (
 -- Tabla de exámenes/tests
 CREATE TABLE examen (
     id_examen VARCHAR(50) PRIMARY KEY,
+    nombre VARCHAR(200) NOT NULL,
     codigo VARCHAR(50) NOT NULL,
     descripcion VARCHAR(300) NOT NULL,
     precio DECIMAL(10,2) NOT NULL CHECK (precio >= 0),

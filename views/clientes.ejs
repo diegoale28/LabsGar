@@ -5,18 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js"
-    integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y"
-    crossorigin="anonymous"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <title>
     <%= titulo %>
   </title>
@@ -25,7 +15,7 @@
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
     <div class="container-fluid">
-      <a class="navbar-brand fw-bold" href="/clientes">
+      <a class="navbar-brand fw-bold" href="/">
         <figure class="mb-0">
           <img src="/images/labsgar.png" alt="labsgar" width="30" height="30" class="d-inline-block align-text-center">
           LabsGar
@@ -40,13 +30,16 @@
 
         <ul class="navbar-nav mx-auto">
           <li class="nav-item">
-            <a class="nav-link active" href="/">Inicio</a>
+            <a class="nav-link" href="/">Inicio</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Servicios</a>
+            <a class="nav-link" href="/examenes">Examenes</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Proyectos</a>
+            <a class="nav-link active" href="/clientes">Clientes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/doctores">Doctores</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Contacto</a>
@@ -68,7 +61,7 @@
           <h4 class="card-title"> <i data-lucide="user-plus"></i> <span id="titulo">Crear cliente nuevo</span></h4>
           <form method="post" action="/clientes/crear" id="formulario" class="row g-3 needs-validation" novalidate>
             <div class="col-12">
-              <label for="nombre" class="form-label text-capitalize">nombre</label>
+              <label for="nombre" class="form-label text-capitalize fw-bold">nombre</label>
               <input type="text" autocomplete="off" class="form-control" name="nombre" placeholder="Nombre del cliente"
                 id="nombre" value="" required>
               <div class="valid-feedback">
@@ -78,7 +71,7 @@
               </div>
             </div>
             <div class="col-12">
-              <label for="apellido" class="form-label text-capitalize">apellido</label>
+              <label for="apellido" class="form-label text-capitalize fw-bold">apellido</label>
               <input type="text" autocomplete="off" class="form-control" name="apellido"
                 placeholder="Apellido del cliente" id="apellido" value="" required>
               <div class="valid-feedback">
@@ -88,7 +81,7 @@
               </div>
             </div>
             <div class="col-12">
-              <label for="cedula" class="form-label text-capitalize">cedula</label>
+              <label for="cedula" class="form-label text-capitalize fw-bold">cedula</label>
               <div class="d-flex gap-2">
                 <select class="form-select form-select w-25" name="prefijo" id="prefijo" required>
                   <option selected value=""></option>
@@ -106,7 +99,7 @@
               </div>
             </div>
             <div class="col-12">
-              <label for="telefono" class="form-label text-capitalize">Teléfono</label>
+              <label for="telefono" class="form-label text-capitalize fw-bold">Teléfono</label>
               <div class="d-flex gap-2">
                 <select class="form-select form-select w-25" name="codigo" id="codigo">
                   <option selected value=""></option>
@@ -141,7 +134,7 @@
             </div>
 
             <div class="mb-3">
-              <label for="direccion" class="form-label text-capitalize">dirección</label>
+              <label for="direccion" class="form-label text-capitalize fw-bold">dirección</label>
               <textarea class="form-control" name="direccion" id="direccion" rows="3" style="resize: none;"
                 required></textarea>
             </div>
@@ -273,10 +266,9 @@
       </div>
     </div>
   </div>
+
   <script>
     lucide.createIcons();
-  </script>
-  <script>
     (() => {
       'use strict'
 
@@ -296,8 +288,8 @@
         }, false)
       })
     })()
-  </script>
-  <script>
+
+
     setTimeout(() => {
       const alertElement = document.querySelector('.alert');
       if (alertElement) {
@@ -350,6 +342,7 @@
       document.getElementById('texto-boton').textContent = 'Crear cliente'
     }
   </script>
+  <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

@@ -1,11 +1,150 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/stylesheets/style.css" rel="stylesheet">
+  <title>
+    <%= titulo %>
+  </title>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="/">
+        <figure class="mb-0">
+          <img src="/images/labsgar.png" alt="labsgar" width="30" height="30" class="d-inline-block align-text-center">
+          LabsGar
+        </figure>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+
+        <ul class="navbar-nav mx-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="/">Inicio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/examenes">Examenes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/clientes">Clientes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Contacto</a>
+          </li>
+           <li class="nav-item">
+            <a class="nav-link" href="/doctores">Doctores</a>
+          </li>
+        </ul>
+
+        <div class="d-flex">
+          <a href="#" class="btn btn-primary rounded-pill px-4">Empezar</a>
+        </div>
+
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+  <div class="row g-4">
+    <div class="col-md-4 col-lg-3">
+      <a href="/clientes" class="text-decoration-none">
+        <div class="card h-100 border-0 shadow-sm module-card text-center p-4">
+          <div class="card-body">
+            <div class="icon-container mb-3 text-primary">
+              <i data-lucide="users" style="width: 48px; height: 48px;"></i>
+            </div>
+            <h5 class="card-title fw-bold text-dark">Clientes</h5>
+            <p class="card-text text-muted small">Gestión de pacientes y expedientes</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col-md-4 col-lg-3">
+      <a href="/ordenes" class="text-decoration-none">
+        <div class="card h-100 border-0 shadow-sm module-card text-center p-4">
+          <div class="card-body">
+            <div class="icon-container mb-3 text-warning">
+              <i data-lucide="clipboard-list" style="width: 48px; height: 48px;"></i>
+            </div>
+            <h5 class="card-title fw-bold text-dark">Órdenes</h5>
+            <p class="card-text text-muted small">Generar y gestionar nuevas solicitudes</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col-md-4 col-lg-3">
+      <a href="/historias" class="text-decoration-none">
+        <div class="card h-100 border-0 shadow-sm module-card text-center p-4">
+          <div class="card-body">
+            <div class="icon-container mb-3 text-secondary">
+              <i data-lucide="history" style="width: 48px; height: 48px;"></i>
+            </div>
+            <h5 class="card-title fw-bold text-dark">Historias</h5>
+            <p class="card-text text-muted small">Historial clínico y antecedentes</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col-md-4 col-lg-3">
+      <a href="/examenes" class="text-decoration-none">
+        <div class="card h-100 border-0 shadow-sm module-card text-center p-4">
+          <div class="card-body">
+            <div class="icon-container mb-3 text-success">
+              <i data-lucide="package" style="width: 48px; height: 48px;"></i>
+            </div>
+            <h5 class="card-title fw-bold text-dark">Examenes</h5>
+            <p class="card-text text-muted small">Lista de examenes</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col-md-4 col-lg-3">
+      <a href="/doctores" class="text-decoration-none">
+        <div class="card h-100 border-0 shadow-sm module-card text-center p-4">
+          <div class="card-body">
+            <div class="icon-container mb-3 text-info">
+              <i data-lucide="stethoscope" style="width: 48px; height: 48px;"></i>
+            </div>
+            <h5 class="card-title fw-bold text-dark">Doctores</h5>
+            <p class="card-text text-muted small">Registro de médicos referentes</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col-md-4 col-lg-3">
+      <a href="/resultados" class="text-decoration-none">
+        <div class="card h-100 border-0 shadow-sm module-card text-center p-4">
+          <div class="card-body">
+            <div class="icon-container mb-3 text-danger">
+              <i data-lucide="file-text" style="width: 48px; height: 48px;"></i>
+            </div>
+            <h5 class="card-title fw-bold text-dark">Resultados</h5>
+            <p class="card-text text-muted small">Carga y entrega de exámenes</p>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
 </html>

@@ -1,0 +1,680 @@
+<% const horas=(tiempo)=> {
+  if (tiempo > 60) {
+  const horas = Math.floor(tiempo / 60);
+  const minutos = tiempo % 60;
+  return `${horas}h ${minutos}m`;
+  } else {
+  return `${tiempo}m`;
+  };
+  }
+  %>
+
+  <!DOCTYPE html>
+  <html lang="es">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <title>
+      <%= titulo %>
+    </title>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+      <div class="container-fluid">
+       <a class="navbar-brand fw-bold" href="/">
+        <figure class="mb-0">
+          <img src="/images/labsgar.png" alt="labsgar" width="30" height="30" class="d-inline-block align-text-center">
+          LabsGar
+        </figure>
+      </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+
+          <ul class="navbar-nav mx-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/">Inicio</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/examenes">Examenes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/clientes">Clientes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/doctores">Doctores</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Contacto</a>
+            </li>
+          </ul>
+
+          <div class="d-flex">
+            <a href="#" class="btn btn-primary rounded-pill px-4">Empezar</a>
+          </div>
+
+        </div>
+      </div>
+    </nav>
+
+    <main class="p-4 mx-auto" style="width: 90%;">
+      <div class="container mt-5">
+        <div class="row mb-4 justify-content-between">
+          <div class="col-6 d-flex gap-4">
+            <button type="button" class="btn btn-primary rounded-pill px-4" data-bs-toggle="modal"
+              data-bs-target="#agregarExamen" onclick="limpiarExamen()">
+              <i data-lucide="clipboard-list"></i> Agregar Examen
+            </button>
+            <button type="button" class="btn btn-primary rounded-pill px-4" onclick="limipiarInsumo()"
+              data-bs-toggle="modal" data-bs-target="#agregarInsumo">
+              <i data-lucide="flask-conical"></i> Agregar insumo
+            </button>
+            <button type="button" class="btn btn-primary rounded-pill px-4" data-bs-toggle="modal"
+              data-bs-target="#tablaInsumo">
+              <i data-lucide="list"></i> Lista de insumos
+            </button>
+          </div>
+          <div class="col-4">
+            <form action="/examenes/buscar" method="post">
+              <div class="input-group">
+                <input type="text" class="form-control" name="nombreBuscar" placeholder="Buscar por nombre"
+                  aria-label="Buscar por nombre" aria-describedby="button-search" autocomplete="off">
+                <button class="btn btn-outline-secondary" type="submit" id="button-search"><i data-lucide="search"></i>
+                </button>
+              </div>
+            </form>
+          </div>
+          </button>
+        </div>
+
+        <h2 class="mb-4">Catálogo de Exámenes</h2>
+        <% if(examenes.length===0) { %>
+          <div class="row justify-content-center">
+            <div class="col-md-6 text-center py-5">
+              <div class="display-1 text-muted mb-4">
+                🔬
+              </div>
+
+              <h3 class="fw-bold text-secondary">No se encontraron exámenes</h3>
+              <p class="text-muted">
+                <%= mensaje %>
+              </p>
+            </div>
+          </div>
+          <% } %>
+
+            <div class="row g-4">
+              <% examenes.forEach(function (examen) { const tiempo=horas(examen.duracion_estimada); %>
+                <div class="col-4">
+                  <div class="card shadow-sm">
+                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                      <small class="text-muted fw-bold">
+                        <%= examen.codigo %>
+                      </small>
+                      <% if(examen.requiere_ayuno==1) { %>
+                        <span class="badge rounded-pill bg-danger text-white">
+                          Requiere Ayuno
+                        </span>
+                        <% } %>
+                    </div>
+
+                    <div class="card-body">
+                      <h5 class="card-title text-primary">
+                        <%= examen.nombre %>
+                      </h5>
+                      <p class="card-text text-secondary small">
+                        <%= examen.descripcion %>
+                      </p>
+
+                      <div class="d-flex justify-content-between align-items-center my-3">
+                        <div>
+                          <span class="text-muted d-block small">Precio</span>
+                          <span class="fs-4 fw-bold text-success">
+                            <%= examen.precio %>
+                          </span>
+                        </div>
+                        <div class="text-end">
+                          <span class="text-muted d-block small">Duración</span>
+                          <span class="badge bg-light text-dark border">
+                            <%= tiempo %>
+                          </span>
+                        </div>
+                      </div>
+
+                      <div class="accordion" id="instrucciones<%= examen.id_examen %>>">
+                        <div class="accordion-item border rounded">
+                          <h2 class="accordion-header">
+                            <button class="accordion-button collapsed py-2 small" type="button"
+                              data-bs-toggle="collapse" data-bs-target="#<%= examen.id_examen %>>">
+                              Instrucciones de preparación
+                            </button>
+                          </h2>
+                          <div id="<%= examen.id_examen %>>" class="accordion-collapse collapse"
+                            data-bs-parent="#instrucciones<%= examen.id_examen %>>">
+                            <div class="accordion-body small text-muted">
+                              <%= examen.instrucciones_preparacion %>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card-footer bg-transparent border-top-0 pb-3">
+                        <button class="btn btn-outline-primary w-100"><i data-lucide="eye"></i> Ver detalles...</button>
+                      </div>
+                      <div class="card-footer bg-transparent border-top-0 pb-3">
+                        <div class="col-12 d-flex justify-content-center btn-group" role="group">
+                          <button class="btn btn-outline-dark" type="button" data-bs-toggle="modal"
+                            onclick="editarExamen('<%= JSON.stringify(examen) %>')" data-bs-target="#agregarExamen"><i
+                              data-lucide="pencil"></i> <span id="texto-boton">Editar</span>
+                          </button>
+                          <button class="btn btn-outline-danger" type="button" data-bs-toggle="modal"
+                            data-bs-target="#eliminarExamen" onclick="eliminarExamen('<%= examen.id_examen %>')">
+                            <i data-lucide="trash-2"></i>
+                            Eliminar
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <% }) %>
+            </div>
+      </div>
+      </div>
+    </main>
+
+    <div class="modal fade" id="agregarExamen" tabindex="-1" aria-labelledby="agregarExamenLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+          <form method="post" action="/examenes/crear" id="formulario" class="row g-3 needs-validation" novalidate>
+
+            <div class="modal-body px-5">
+              <h4 class="modal-title mb-4 text-center" id="agregarExamenLabel">Agregar Examen</h4>
+
+              <div class="row g-3">
+
+                <div class="col-4 text-start">
+                  <label for="nombre" class="form-label text-capitalize fw-bold">Nombre del Examen</label>
+                  <input type="text" autocomplete="off" class="form-control" name="nombre"
+                    placeholder="Ej: Hemograma Completo" id="nombre" required>
+                  <div class="invalid-feedback">Por favor ingrese un nombre válido.</div>
+                </div>
+
+                <div class="col-md-4 text-start">
+                  <label for="codigo" class="form-label text-capitalize fw-bold">Código</label>
+                  <input type="text" class="form-control" name="codigo" id="codigo" placeholder="Ej: EX-101" required>
+                  <div class="invalid-feedback">Ingrese un código válido.</div>
+                </div>
+
+                <div class="col-md-4 text-start">
+                  <label for="precio" class="form-label text-capitalize fw-bold">Precio</label>
+                  <div class="input-group">
+                    <span class="input-group-text">$</span>
+                    <input type="number" step="0.01" class="form-control" name="precio" id="precio" placeholder="0.00"
+                      required>
+                  </div>
+                </div>
+
+                <div class="col-md-4 text-start">
+                  <label for="duracion_minutos" class="form-label text-capitalize fw-bold">Duración (Minutos)</label>
+                  <input type="number" class="form-control" name="duracion_minutos" id="duracion_minutos"
+                    placeholder="Ej: 30" required>
+                </div>
+
+
+                <div class="col-4 text-start">
+                  <label for="descripcion" class="form-label text-capitalize fw-bold">Descripción Corta</label>
+                  <textarea class="form-control" style="resize: none;" name="descripcion" id="descripcion" rows="2"
+                    placeholder="Breve detalle del examen..." required></textarea>
+                </div>
+
+                <div class="col-auto text-start d-flex align-items-end">
+                  <div class="form-check form-switch mb-2">
+                    <input class="form-check-input" type="checkbox" n role="switch" id="requiere_ayuno"
+                      name="requiere_ayuno">
+                    <label class="form-check-label fw-bold" for="requiere_ayuno">¿Requiere Ayuno?</label>
+                  </div>
+                </div>
+                <div class="col-4 text-start">
+                  <label for="instrucciones_preparacion" class="form-label text-capitalize fw-bold">Instrucciones de
+                    Preparación</label>
+                  <textarea class="form-control" style="resize: none;" name="instrucciones_preparacion"
+                    id="instrucciones_preparacion" rows="3" placeholder="Ej: Venir con 12 horas de ayuno..."
+                    required></textarea>
+                  <div class="form-text">Indique todas las restricciones previas.</div>
+                </div>
+              </div>
+              <div class="row g-3">
+                <hr class="my-4">
+                <h5 class="text-secondary mb-3"><i data-lucide="package"></i> Insumos y Cantidades</h5>
+
+                <div class="row g-2 align-items-end">
+                  <div class="col-md-6 text-start">
+                    <label class="form-label small fw-bold text-primary">Insumo</label>
+                    <select class="form-select" id="selectInsumos">
+                      <option value="" selected disabled>Elija un insumo...</option>
+                      <% insumos.forEach(function(insumo) { %>
+                        <option value="<%= insumo.id_insumo %>" data-nombre="<%= insumo.nombre %>">
+                          <%= insumo.nombre %>
+                        </option>
+                        <% }); %>
+                    </select>
+                  </div>
+
+                  <div class="col-md-3 text-start">
+                    <label class="form-label small fw-bold text-primary">Cantidad</label>
+                    <input type="number" id="cantidadInsumo" class="form-control" min="1" value="1">
+                  </div>
+
+                  <div class="col-md-3">
+                    <button type="button" class="btn btn-dark w-100" id="btnAgregarInsumo">
+                      <i data-lucide="plus"></i> Agregar
+                    </button>
+                  </div>
+                </div>
+                <div class="col-12 mt-3">
+                  <div class="table-responsive">
+                    <table class="table table-sm table-hover border">
+                      <thead class="table-light">
+                        <tr>
+                          <th>Insumo</th>
+                          <th class="text-center">Cantidad</th>
+                          <th class="text-center">Acción</th>
+                        </tr>
+                      </thead>
+                      <tbody id="tablaInsumosBody">
+                        <tr id="filaVacia">
+                          <td colspan="3" class="text-center text-muted small">No hay insumos asignados</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <input type="hidden" name="insumos_utilizados" id="insumos_utilizados">
+            <div class="modal-footer border-0 justify-content-center pb-4">
+              <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Cancelar</button>
+              <button type="submit" class="btn btn-primary px-4" id="botonGuardar" disabled>Aceptar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="agregarInsumo" tabindex="-1" aria-labelledby="agregarInsumoLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <form method="post" action="/examenes/crearInsumo" id="formularioInsumo" class="row g-3 needs-validation"
+            novalidate>
+            <div class="modal-body text-center px-5">
+              <h4 class="modal-title mb-2" id="agregarInsumoLabel">Agregar insumo</h4>
+
+              <div class="col-md-12 text-start">
+                <label for="nombre" class="form-label text-capitalize fw-bold">Nombre del Insumo</label>
+                <input type="text" autocomplete="off" class="form-control" name="nombre"
+                  placeholder="Ej: Tubo de ensayo al vacío" id="nombre" required>
+                <div class="invalid-feedback">Por favor ingrese el nombre del insumo.</div>
+              </div>
+
+              <div class="col-md-12 text-start">
+                <label for="codigo" class="form-label text-capitalize fw-bold">Código</label>
+                <input type="text" class="form-control" name="codigo" id="codigo" placeholder="INS-001" required>
+                <div class="invalid-feedback">Código requerido.</div>
+              </div>
+
+              <div class="col-md-12 text-start">
+                <label for="costo_unitario" class="form-label text-capitalize fw-bold">Costo Unitario</label>
+                <div class="input-group has-validation">
+                  <span class="input-group-text">$</span>
+                  <input type="number" step="0.001" class="form-control" name="costo_unitario" id="costo_unitario"
+                    placeholder="0.00" required>
+                  <div class="invalid-feedback">Ingrese el costo.</div>
+                </div>
+              </div>
+
+              <div class="col-md-12 text-start">
+                <label for="unidad_medida" class="form-label text-capitalize fw-bold">Unidad de Medida</label>
+                <select class="form-select" name="unidad_medida" id="unidad_medida" required>
+                  <option selected disabled value="">Seleccione...</option>
+                  <option value="unidad">Unidad (u)</option>
+                  <option value="mililitro">Mililitro (ml)</option>
+                  <option value="gramo">Gramo (g)</option>
+                  <option value="caja">Caja</option>
+                  <option value="paquete">Paquete</option>
+                </select>
+                <div class="invalid-feedback">Seleccione una unidad.</div>
+              </div>
+            </div>
+            <div class="modal-footer border-0 justify-content-center pb-4">
+              <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Cancelar</button>
+              <button type="submit" class="btn btn-primary px-4">Aceptar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="tablaInsumo" tabindex="-1" aria-labelledby="tablaInsumoLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content p-2">
+          <div class="modal-body text-center px-5">
+            <h4 class="modal-title mb-2" id="tablaInsumoLabel">Lista de insumos</h4>
+          </div>
+          <div class="card" style="max-height: 660px; overflow-y: auto;">
+            <div class="card-body">
+              <table class="table table-hover">
+                <thead class="position-sticky top-0">
+                  <tr>
+                    <th scope="col">Código</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Costo unitario</th>
+                    <th scope="col">Unidad de medida</th>
+                    <th scope="col">Opciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% if (insumos.length) { %>
+                    <% insumos.forEach(function(insumo) { %>
+                      <tr style="vertical-align: center;">
+                        <td scope="row" class="text-capitalize">
+                          <%= insumo.codigo %>
+                        </td>
+                        <td>
+                          <%= insumo.nombre %>
+                        </td>
+                        <td>
+                          <%= insumo.costo_unitario %>
+                        </td>
+                        <td class="text-capitalize">
+                          <%= insumo.unidad_medida %>
+                        </td>
+                        <td>
+                          <button type="button" class="btn btn-primary rounded-circle pt-2 pb-2" data-bs-dismiss="modal"
+                            onclick="editarInsumo('<%= JSON.stringify(insumo) %>')"><i data-lucide="pen"></i></button>
+                          <button type="button" class="btn btn-danger rounded-circle pt-2 pb-2" data-bs-toggle="modal"
+                            data-bs-target="#eliminarInsumo" onclick="eliminarInsumoBack('<%= insumo.id_insumo %>')"><i
+                              data-lucide="trash-2"></i></button>
+                        </td>
+                      </tr>
+                      <% }); %>
+                        <% } else { %>
+                          <tr>
+                            <td colspan="6" class="text-center">
+                              <i data-lucide="file-badge"></i>
+                              No hay insumos registrados.
+                            </td>
+                          </tr>
+                          <% } %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="modal-footer border-0 justify-content-center pb-4">
+            <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="position-fixed top-0 d-flex justify-content-center w-100" style="z-index: 11;">
+      <% if (mensaje) { %>
+        <div
+          class="alert alert-<%= status == 201 || status == 200 ? 'success' : 'danger' %> alert-dismissible fade show m-3"
+          role="alert" style="width: 30%;">
+          <strong>
+            <%= mensaje %>
+          </strong>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <% } %>
+    </div>
+
+    <div class="modal fade" id="eliminarInsumo" tabindex="-1" aria-labelledby="eliminarInsumoLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header border-0 pb-0">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center pt-0">
+            <div class="text-danger mb-3">
+              <i data-lucide="trash-2" style="width: 64px; height: 64px;"></i>
+            </div>
+            <h4 class="modal-title mb-2" id="eliminarInsumoLabel">¿Eliminar insumo?</h4>
+            <p class="text-muted">Esta acción no se puede deshacer.</p>
+          </div>
+          <div class="modal-footer border-0 justify-content-center pb-4">
+            <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Cancelar</button>
+            <form id="eliminarInsumoForm" method="POST" action="">
+              <button type="submit" class="btn btn-danger px-4">Eliminar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="eliminarExamen" tabindex="-1" aria-labelledby="eliminarExamenLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header border-0 pb-0">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center pt-0">
+            <div class="text-danger mb-3">
+              <i data-lucide="trash-2" style="width: 64px; height: 64px;"></i>
+            </div>
+            <h4 class="modal-title mb-2" id="eliminarExamenLabel">¿Eliminar examen?</h4>
+            <p class="text-muted">Esta acción no se puede deshacer.</p>
+          </div>
+          <div class="modal-footer border-0 justify-content-center pb-4">
+            <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Cancelar</button>
+            <form id="eliminarExamenForm" method="POST" action="">
+              <button type="submit" class="btn btn-danger px-4">Eliminar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      lucide.createIcons();
+      (() => {
+        'use strict'
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll('.needs-validation')
+        console.log(Array.from(forms));
+
+        // Loop over them and prevent submission
+        Array.from(forms).forEach(form => {
+          form.addEventListener('submit', event => {
+            if (!form.checkValidity()) {
+              event.preventDefault()
+              event.stopPropagation()
+            }
+
+            form.classList.add('was-validated')
+          }, false)
+        })
+      })()
+
+      setTimeout(() => {
+        const alertElement = document.querySelector('.alert');
+        if (alertElement) {
+          const alert = new bootstrap.Alert(alertElement);
+          alert.close();
+        }
+      }, 3000);
+
+
+      let insumosExamen = [];
+
+      document.getElementById('btnAgregarInsumo').addEventListener('click', function () {
+        const select = document.getElementById('selectInsumos');
+        const inputCantidad = document.getElementById('cantidadInsumo');
+        const id = select.value;
+        const nombre = select.options[select.selectedIndex]?.getAttribute('data-nombre');
+        const unidad = select.options[select.selectedIndex]?.getAttribute('data-unidad');
+        const cantidad = parseFloat(inputCantidad.value);
+        const campoHidden = document.getElementById('insumos_utilizados');
+        const boton = document.getElementById('botonGuardar');
+        if (!id || cantidad <= 0) {
+          alert("Seleccione un insumo y una cantidad válida.");
+          return;
+        }
+        const existe = insumosExamen.find(item => item.id_insumo === id);
+        if (existe) {
+          alert("Este insumo ya está en la lista. Elimínalo si deseas cambiar la cantidad.");
+          return;
+        }
+
+        insumosExamen.push({ id_insumo: id, nombre: nombre, cantidad_insumo: cantidad });
+        campoHidden.value = JSON.stringify(insumosExamen);
+        actualizarTabla();
+        select.value = "";
+        inputCantidad.value = 1;
+        boton.disabled = false;
+        console.log(insumosExamen)
+      });
+
+      function actualizarTabla() {
+        const tbody = document.getElementById('tablaInsumosBody');
+        tbody.innerHTML = "";
+
+        if (insumosExamen.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="3" class="text-center text-muted small">No hay insumos asignados</td></tr>`;
+          return;
+        }
+
+        insumosExamen.forEach((insumo, index) => {
+          const fila = `
+            <tr>
+                <td class="align-middle">${insumo.nombre}</td>
+                <td class="text-center align-middle">
+                    <span class="badge bg-info text-dark">${insumo.cantidad_insumo}</span>
+                </td>
+                <td class="text-center">
+                    <button type="button" class="btn btn-outline-danger btn-sm" onclick="eliminarInsumo(${index})">
+                        Eliminar
+                    </button>
+                </td>
+            </tr>
+        `;
+          tbody.innerHTML += fila;
+        });
+      }
+
+      function eliminarInsumo(index) {
+        insumosExamen.splice(index, 1);
+        const campoHidden = document.getElementById('insumos_utilizados');
+        campoHidden.value = JSON.stringify(insumosExamen)
+        actualizarTabla();
+        if (insumosExamen.length == 0) {
+          const boton = document.getElementById('botonGuardar');
+          boton.disabled = true;
+        }
+      }
+
+      function limpiarExamen() {
+        const boton = document.getElementById('botonGuardar');
+        const select = document.getElementById('selectInsumos');
+        const inputCantidad = document.getElementById('cantidadInsumo');
+        const titulo = document.getElementById('agregarExamenLabel');
+        const form = document.getElementById('formulario')
+        form.action = '/examenes/crear'
+        form.nombre.value = ''
+        form.codigo.value = ''
+        form.precio.value = 0
+        form.duracion_minutos.value = ''
+        form.descripcion.value = ''
+        form.requiere_ayuno.checked = "off"
+        form.instrucciones_preparacion.value = ''
+        select.value = "";
+        inputCantidad.value = 1;
+        boton.disabled = true
+        titulo.textContent = 'Agregar examen'
+        insumosExamen = []
+        actualizarTabla()
+      }
+
+      function editarExamen(objeto) {
+        const boton = document.getElementById('botonGuardar');
+        const select = document.getElementById('selectInsumos');
+        const inputCantidad = document.getElementById('cantidadInsumo');
+        const titulo = document.getElementById('agregarExamenLabel');
+        const temp = objeto.replace(/\\/g, "\\\\")
+          .replace(/\n/g, "\\n")
+          .replace(/\r/g, "\\r")
+          .replace(/\t/g, "\\t")
+          .replace(/'/g, "&#39;");
+        const datos = JSON.parse(temp)
+        const form = document.getElementById('formulario')
+        const campoHidden = document.getElementById('insumos_utilizados');
+        form.action = '/examenes/editarExamen/' + datos.id_examen + '?_method=PUT'
+        form.nombre.value = datos.nombre
+        form.codigo.value = datos.codigo
+        form.precio.value = parseFloat(datos.precio)
+        form.duracion_minutos.value = datos.duracion_estimada
+        form.descripcion.value = datos.descripcion
+        form.requiere_ayuno.checked = datos.requiere_ayuno == 1 ? "on" : "off"
+        form.instrucciones_preparacion.value = datos.instrucciones_preparacion
+        campoHidden.value = JSON.stringify(datos.insumo_utilizados)
+        insumosExamen = datos.insumo_utilizados
+        select.value = "";
+        inputCantidad.value = 1;
+        boton.disabled = false
+        titulo.textContent = 'Agregar examen'
+        actualizarTabla()
+      }
+
+      function limipiarInsumo(objeto) {
+        const form = document.getElementById('formularioInsumo')
+        const titulo = document.getElementById('agregarInsumoLabel')
+        form.nombre.value = ''
+        form.codigo.value = ''
+        form.costo_unitario.value = 0
+        form.unidad_medida.value = null
+        form.action = '/examenes/crearInsumo'
+        titulo.textContent = 'Agregar insumo'
+      }
+
+      function editarInsumo(objeto) {
+        const titulo = document.getElementById('agregarInsumoLabel')
+        const temp = objeto.replace(/\\/g, "\\\\")
+          .replace(/\n/g, "\\n")
+          .replace(/\r/g, "\\r")
+          .replace(/\t/g, "\\t")
+          .replace(/'/g, "&#39;");
+        const datos = JSON.parse(temp)
+        const form = document.getElementById('formularioInsumo')
+        form.nombre.value = datos.nombre
+        form.codigo.value = datos.codigo
+        form.costo_unitario.value = parseFloat(datos.costo_unitario)
+        form.unidad_medida.value = datos.unidad_medida.toLowerCase()
+        form.action = '/examenes/editarInsumo/' + datos.id_insumo + '?_method=PUT'
+        const modalInsumo = new bootstrap.Modal(document.getElementById('agregarInsumo'));
+        modalInsumo.show();
+        titulo.textContent = 'Editar insumo'
+      }
+
+      function eliminarInsumoBack(id) {
+        const form = document.getElementById('eliminarInsumoForm')
+        form.action = '/examenes/eliminarInsumo/' + id + '?_method=DELETE'
+      }
+
+      function eliminarExamen(id) {
+        const form = document.getElementById('eliminarExamenForm')
+        form.action = '/examenes/eliminarExamen/' + id + '?_method=DELETE'
+      }
+
+    </script>
+    <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+  </body>
+
+  </html>

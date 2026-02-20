@@ -1,9 +1,9 @@
-const clientesM = require('../models/clientesM')
+const docoresM = require('../models/doctoresM')
 
-class clientesC {
+class doctoresC {
   todos() {
     return new Promise((resolve, reject) => {
-      clientesM.todos()
+      docoresM.todos()
         .then((res) => {
           resolve(res)
         }).catch((err) => {
@@ -13,9 +13,9 @@ class clientesC {
 
   }
 
-  uno(cedula) {
+  uno(especialidad) {
     return new Promise((resolve, reject) => {
-      clientesM.uno(cedula)
+      docoresM.uno(especialidad)
         .then((res) => {
           resolve(res)
         }).catch((err) => {
@@ -25,9 +25,9 @@ class clientesC {
 
   }
 
-  crear(cliente) {
+  crear(medico) {
     return new Promise((resolve, reject) => {
-      clientesM.crear(cliente)
+      docoresM.crear(medico)
         .then((res) => {
           resolve(res)
         }).catch((err) => {
@@ -37,9 +37,9 @@ class clientesC {
 
   }
 
-  editar(cliente, id) {
+  editar(medico, id) {
     return new Promise((resolve, reject) => {
-      clientesM.editar(cliente, id)
+      docoresM.editar(medico, id)
         .then((res) => {
           resolve(res)
         }).catch((err) => {
@@ -50,7 +50,7 @@ class clientesC {
 
   eliminar(id) {
     return new Promise((resolve, reject) => {
-      clientesM.eliminar(id)
+      docoresM.eliminar(id)
         .then((res) => {
           resolve(res)
         }).catch((err) => {
@@ -61,4 +61,4 @@ class clientesC {
 
 }
 
-module.exports = new clientesC();
+module.exports = new doctoresC();
