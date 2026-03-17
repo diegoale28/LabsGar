@@ -51,13 +51,21 @@
           <li class="nav-item">
             <a class="nav-link" href="/resultados">Resultados</a>
           </li>
-          <li class="nav-item">
+ <li class="nav-item">
             <a class="nav-link" href="/ventas">Ventas</a>
           </li>
+          <% if(rol == 'ADMIN'){ %>
+          <li class="nav-item">
+            <a class="nav-link" href="/usuarios/lista">Lista de usuarios</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/usuarios">Registrar usuarios</a>
+          </li>
+          <% } %>
         </ul>
 
         <div class="d-flex">
-          <a href="#" class="btn btn-primary rounded-pill px-4">Empezar</a>
+          <a href="/usuarios/logout" class="btn btn-danger rounded-pill px-4">Cerrar sesión</a>
         </div>
 
       </div>

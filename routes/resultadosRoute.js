@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
-var resultadoC = require('../controllers/resultadosC')
+var resultadoC = require('../controllers/resultadosC');
+const auth = require('../middleware/auth');
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
+router.get('/', auth, function (req, res, next) {
   resultadoC.todos()
     .then((result) => {
       res.render('resultados', {
@@ -12,7 +13,8 @@ router.get('/', function (req, res, next) {
         medicos: result.medicos,
         ordenes: result.ordenes,
         mensaje: result.mensaje,
-        status:result.status
+        status:result.status,
+        rol: req.body.rol
       })
       // res.send(result)
     }).catch((err) => {
@@ -20,7 +22,7 @@ router.get('/', function (req, res, next) {
     });
 });
 
-router.post('/crear', function (req, res, next) {
+router.post('/crear', auth, function (req, res, next) {
   resultadoC.crear(req.body)
     .then((result) => {
       res.render('resultados', {
@@ -29,7 +31,8 @@ router.post('/crear', function (req, res, next) {
         medicos: result.medicos,
         ordenes: result.ordenes,
         mensaje: result.mensaje,
-        status:result.status
+        status:result.status,
+        rol: req.body.rol
       })
       // res.send(result)
     }).catch((err) => {

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    Iniciar sesión
+  </title>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: #f0f2f5;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+    }
+
+    .login-card {
+      border: none;
+      border-radius: 20px;
+      transition: transform 0.3s;
+    }
+
+    .icon-circle {
+      width: 80px;
+      height: 80px;
+      background-color: #0d6efd;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin: -60px auto 20px;
+      box-shadow: 0 4px 10px rgba(13, 110, 253, 0.3);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-sm-8 col-md-6 col-lg-4">
+        <div class="card login-card shadow-lg">
+          <div class="card-body p-5">
+            <div class="icon-circle">
+              <i data-lucide="user-lock"></i>
+            </div>
+
+            <h3 class="text-center fw-bold mb-4">Bienvenido</h3>
+
+            <form action="/usuarios/iniciar" method="POST">
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="usuario" name="usuario" placeholder="Usuario" required>
+                <label for="usuario">Usuario</label>
+              </div>
+
+              <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="clave" name="clave" placeholder="Contraseña" required>
+                <label for="clave">Contraseña</label>
+              </div>
+
+              <div class="d-grid mb-3">
+                <button type="submit" class="btn btn-primary btn-lg fw-bold">
+                  Entrar <i data-lucide="user-key" ></i>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="position-fixed top-0 d-flex justify-content-center w-100" style="z-index: 11;">
+      <% if (mensaje) { %>
+        <div
+          class="alert alert-<%= status == 201 || status == 200 ? 'success' : 'danger' %> alert-dismissible fade show m-3"
+          role="alert" style="width: 30%;">
+          <strong>
+            <%= mensaje %>
+          </strong>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <% } %>
+    </div>
+  <script>
+    lucide.createIcons();
+  </script>
+  <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

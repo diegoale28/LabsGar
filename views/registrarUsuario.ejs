@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    <%= titulo %>
+  </title>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .card {
+      border: none;
+      border-radius: 15px;
+    }
+
+    .btn-primary {
+      border-radius: 8px;
+      padding: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="/">
+        <figure class="mb-0">
+          <img src="/images/labsgar.png" alt="labsgar" width="30" height="30" class="d-inline-block align-text-center">
+          LabsGar
+        </figure>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+
+        <ul class="navbar-nav mx-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/">Inicio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/examenes">Examenes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/clientes">Clientes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/doctores">Doctores</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="/ordenes">Ordenes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/historias">Historias</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/resultados">Resultados</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/ventas">Ventas</a>
+          </li>
+          <% if(rol == 'ADMIN'){ %>
+          <li class="nav-item">
+            <a class="nav-link" href="/usuarios/lista">Lista de usuarios</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/usuarios">Registrar usuarios</a>
+          </li>
+          <% } %>
+        </ul>
+
+        <div class="d-flex">
+          <a href="/usuarios/logout" class="btn btn-danger rounded-pill px-4">Cerrar sesión</a>
+        </div>
+
+      </div>
+    </div>
+  </nav>
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-5">
+        <div class="card shadow-sm">
+          <div class="card-body p-4">
+            <h2 class="text-center mb-4">Registrar Usuario</h2>
+            <hr>
+
+            <form action="/usuarios/registro" method="POST">
+
+              <div class="row mb-3">
+                <div class="col">
+                  <label for="nombre" class="form-label">Nombre</label>
+                  <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ej: Juan" required>
+                </div>
+                <div class="col">
+                  <label for="apellido" class="form-label">Apellido</label>
+                  <input type="text" class="form-control" id="apellido" name="apellido" placeholder="Ej: Pérez"
+                    required>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="usuario" class="form-label">Nombre de Usuario</label>
+                <div class="input-group">
+                  <span class="input-group-text">@</span>
+                  <input type="text" class="form-control" id="usuario" name="usuario" placeholder="jperez" required>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="clave" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" id="clave" name="clave" placeholder="••••••••" required>
+              </div>
+
+              <div class="mb-4">
+                <label for="rol" class="form-label">Rol del usuario</label>
+                <select class="form-select" id="rol" name="rol_usu" required>
+                  <option value="" selected disabled>Selecciona un rol...</option>
+                  <% if(roles.length){ %>
+                    <% roles.forEach(function(rol){ %>
+                      <option value="<%= rol.id_rol %>">
+                        <%= rol.rol %>
+                      </option>
+                      <% }) %>
+                        <% } %>
+                </select>
+              </div>
+
+              <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary btn-lg">
+                  <i data-lucide="key-round"></i> Crear Cuenta
+                </button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="position-fixed top-0 d-flex justify-content-center w-100" style="z-index: 11;">
+    <% if (mensaje) { %>
+      <div
+        class="alert alert-<%= status == 201 || status == 200 ? 'success' : 'danger' %> alert-dismissible fade show m-3"
+        role="alert" style="width: 30%;">
+        <strong>
+          <%= mensaje %>
+        </strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      <% } %>
+  </div>
+  <script>
+    lucide.createIcons();
+  </script>
+  <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

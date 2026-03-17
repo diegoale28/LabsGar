@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    Error
+  </title>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+    }
+
+    .auth-card {
+      max-width: 400px;
+      margin: auto;
+      border: none;
+      border-radius: 12px;
+    }
+
+    .icon-box {
+      font-size: 3rem;
+      color: #6c757d;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container text-center">
+    <div class="card auth-card shadow-sm p-4">
+      <div class="card-body">
+        <div class="icon-box mb-3">
+          <i class="bi bi-slash-circle"></i>
+        </div>
+        <h4 class="fw-bold text-dark">No estás autorizado</h4>
+        <p class="text-muted small mb-4">
+          Tu sesión ha expirado o no tienes permisos suficientes para ver este contenido.
+        </p>
+        <div class="d-grid">
+          <a href="/usuarios/login" class="btn btn-dark">
+            Volver al Inicio de Sesión
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    lucide.createIcons();
+  </script>
+  <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

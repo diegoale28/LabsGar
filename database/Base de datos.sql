@@ -166,20 +166,23 @@ CREATE TABLE ventas (
 
 INSERT INTO rol (id_rol, rol) VALUES ('1', 'ADMIN'), ('2', 'Enfermero/Enfermera');
 
-INSERT INTO usuarios (id_usu, nombre, apellido, rol, usuario, clave) VALUES ('1', 'Admin', 'Admin', '1', 'admin', '1234'), ('2', 'Enfermero', 'Enfermero', '2', 'Enfermero', '1234');
+INSERT INTO usuarios (id_usu, nombre, apellido, rol, usuario, clave) 
+VALUES 
+('1', 'Admin', 'Admin', '1', 'admin', '$2b$10$8BfIZIbtocpDi.9TmMzNmujSlvF7g.pKupLNX3acZTDXoR/6rVdbu'), 
+('2', 'Enfermero', 'Enfermero', '2', 'Enfermero', '$2b$10$8BfIZIbtocpDi.9TmMzNmujSlvF7g.pKupLNX3acZTDXoR/6rVdbu');
 
 INSERT INTO usuarios (id_usu, nombre, apellido, rol, usuario, clave)
 VALUES 
-('USU-01', 'Andrés', 'Salazar', 2, 'asalazar_enfer', 'Clave.2026*'),
-('USU-02', 'Beatriz', 'Luna', 2, 'bluna_lab', 'Segura_987'),
-('USU-03', 'Ricardo', 'Peña', 2, 'rpena_salud', 'Ricar_2024!'),
-('USU-04', 'Mariana', 'Vivas', 2, 'mvivas_enfer', 'Mv_Bio2025'),
-('USU-05', 'Jorge', 'Campos', 2, 'jcampos_med', 'J_campos88'),
-('USU-06', 'Carmen', 'Ortiz', 2, 'cortiz_enf', 'Enf.2026_C'),
-('USU-07', 'Francisco', 'Lugo', 2, 'flugo_lab', 'Lab_Pass77'),
-('USU-08', 'Paola', 'Duarte', 2, 'pduarte_enf', 'Pao_Clinic21'),
-('USU-09', 'Roberto', 'Sanz', 2, 'rsanz_bio', 'Bio_Sanz99'),
-('USU-10', 'Julia', 'Torres', 2, 'jtorres_enf', 'Juli_Enf2026');
+('USU-01', 'Andrés', 'Salazar', 2, 'asalazar_enfer', '$2b$10$8BfIZIbtocpDi.9TmMzNmujSlvF7g.pKupLNX3acZTDXoR/6rVdbu'),
+('USU-02', 'Beatriz', 'Luna', 2, 'bluna_lab', '$2b$10$8BfIZIbtocpDi.9TmMzNmujSlvF7g.pKupLNX3acZTDXoR/6rVdbu'),
+('USU-03', 'Ricardo', 'Peña', 2, 'rpena_salud', '$2b$10$8BfIZIbtocpDi.9TmMzNmujSlvF7g.pKupLNX3acZTDXoR/6rVdbu'),
+('USU-04', 'Mariana', 'Vivas', 2, 'mvivas_enfer', '$2b$10$8BfIZIbtocpDi.9TmMzNmujSlvF7g.pKupLNX3acZTDXoR/6rVdbu'),
+('USU-05', 'Jorge', 'Campos', 2, 'jcampos_med', '$2b$10$8BfIZIbtocpDi.9TmMzNmujSlvF7g.pKupLNX3acZTDXoR/6rVdbu'),
+('USU-06', 'Carmen', 'Ortiz', 2, 'cortiz_enf', '$2b$10$8BfIZIbtocpDi.9TmMzNmujSlvF7g.pKupLNX3acZTDXoR/6rVdbu'),
+('USU-07', 'Francisco', 'Lugo', 2, 'flugo_lab', '$2b$10$8BfIZIbtocpDi.9TmMzNmujSlvF7g.pKupLNX3acZTDXoR/6rVdbu'),
+('USU-08', 'Paola', 'Duarte', 2, 'pduarte_enf', '$2b$10$8BfIZIbtocpDi.9TmMzNmujSlvF7g.pKupLNX3acZTDXoR/6rVdbu'),
+('USU-09', 'Roberto', 'Sanz', 2, 'rsanz_bio', '$2b$10$8BfIZIbtocpDi.9TmMzNmujSlvF7g.pKupLNX3acZTDXoR/6rVdbu'),
+('USU-10', 'Julia', 'Torres', 2, 'jtorres_enf', '$2b$10$8BfIZIbtocpDi.9TmMzNmujSlvF7g.pKupLNX3acZTDXoR/6rVdbu');
 
 INSERT INTO insumos (id_insumo, codigo, nombre, unidad_medida)
 VALUES 

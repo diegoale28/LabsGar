@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <title>
+    <%= titulo %>
+  </title>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="/">
+        <figure class="mb-0">
+          <img src="/images/labsgar.png" alt="labsgar" width="30" height="30" class="d-inline-block align-text-center">
+          LabsGar
+        </figure>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+
+        <ul class="navbar-nav mx-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/">Inicio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/examenes">Examenes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/clientes">Clientes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/doctores">Doctores</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/ordenes">Ordenes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/historias">Historias</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/resultados">Resultados</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/ventas">Ventas</a>
+          </li>
+          <% if(rol == 'ADMIN'){ %>
+          <li class="nav-item">
+            <a class="nav-link active" href="/usuarios/lista">Lista de usuarios</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/usuarios">Registrar usuarios</a>
+          </li>
+          <% } %>
+        </ul>
+
+        <div class="d-flex">
+          <a href="/usuarios/logout" class="btn btn-danger rounded-pill px-4">Cerrar sesión</a>
+        </div>
+
+      </div>
+    </div>
+  </nav>
+
+  <section>
+    <div class="container mt-4">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="h4">Lista de usuarios del sistema</h2>
+      </div>
+
+      <div class="col-12 d-flex gap-4 mb-4">
+        <a href="/usuarios" class="btn btn-primary btn-sm rounded-pill px-4">
+          <i data-lucide="user-round-plus" style="width: 20px; height: 20px;"></i> Registrar usuario
+        </a>
+      </div>
+
+      <div class="card shadow-sm">
+        <div class="table-responsive" style="max-height: 700px; overflow: auto;">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+              <tr>
+                <th>Nombre y apellido</th>
+                <th>Usuario</th>
+                <th>Rol</th>
+                <!-- <th class="text-center">Acciones</th> -->
+              </tr>
+            </thead>
+            <tbody>
+              <% if (usuarios.length > 0){ %>
+                <% usuarios.forEach(function(usuario){ %>
+                  <tr>
+                    <td>
+                      <span>
+                        <%= usuario.nombre %>
+                          <%= usuario.apellido %>
+                      </span>
+                    </td>
+                    <td>
+                      <%= usuario.usuario %>
+                    </td>
+                    <td>
+                      <%= usuario.rol %>
+                    </td>
+                    <!-- <td class="text-center">
+                      <div class="d-flex flex-column gap-2">
+                        <div>
+                          editar
+                        </div>
+                        <div>
+                          eliminar
+                        </div>
+                      </div>
+                    </td> -->
+                  </tr>
+                  <% }) %>
+                    <% } else { %>
+                      <td colspan="4" class="text-center">
+                        <i data-lucide="file-x-corner"></i>
+                        </i>
+                        No hay Usuarios registradas
+                      </td>
+                      <%}%>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="position-fixed top-0 d-flex justify-content-center w-100" style="z-index: 11;">
+    <% if (mensaje) { %>
+      <div
+        class="alert alert-<%= status == 201 || status == 200 ? 'success' : 'danger' %> alert-dismissible fade show m-3"
+        role="alert" style="width: 30%;">
+        <strong>
+          <%= mensaje %>
+        </strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      <% } %>
+  </div>
+  <script>
+    lucide.createIcons();
+  </script>
+  <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

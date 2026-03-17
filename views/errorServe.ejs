@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    No autorizado
+  </title>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #fcfcfc;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+    }
+
+    .error-card {
+      border: none;
+      border-top: 5px solid #dc3545;
+      /* Línea roja superior */
+      border-radius: 10px;
+    }
+
+    .status-code {
+      font-size: 4rem;
+      font-weight: 900;
+      color: #dee2e6;
+      line-height: 1;
+    }
+
+    .message-box {
+      background-color: #fff5f5;
+      border-left: 4px solid #dc3545;
+      padding: 15px;
+      font-family: 'Courier New', Courier, monospace;
+      word-wrap: break-word;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-7 col-lg-5">
+        <div class="card error-card shadow-lg">
+          <div class="card-body p-5">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <div class="status-code">
+                <%= status %>
+              </div>
+              <div class="icon">
+                <i data-lucide="circle-alert" style="width: 48px; height: 48px;" class="text-danger"></i>
+              </div>
+            </div>
+
+            <h3 class="h4 fw-bold">¡Ups! Algo salió mal</h3>
+            <p class="text-muted">Se ha producido un error al procesar tu solicitud. Aquí tienes los detalles:</p>
+
+            <div class="message-box my-4">
+              <strong>Detalle:</strong><br>
+              <span class="text-danger">
+                <%= mensaje %>
+              </span>
+            </div>
+          </div>
+        </div>
+        <p class="text-center mt-4 text-muted small">ID del Error: <%= Date.now() %>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+  <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

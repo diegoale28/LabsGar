@@ -14,7 +14,7 @@ var ordenesRouter = require('./routes/ordenesRoute')
 var historiaRouter = require('./routes/historiasRouter')
 var resultadosRouter = require('./routes/resultadosRoute')
 var ventasRouter = require('./routes/ventasRoute')
-
+var usuariosRouter = require('./routes/usuariosRoute')
 var app = express();
 
 // view engine setup
@@ -42,6 +42,7 @@ app.use('/ordenes', ordenesRouter);
 app.use('/historias', historiaRouter);
 app.use('/resultados', resultadosRouter);
 app.use('/ventas', ventasRouter);
+app.use('/usuarios', usuariosRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
